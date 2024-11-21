@@ -1,0 +1,29 @@
+.listPlans {
+  display: flex;
+  padding-top: 2rem;
+  position: relative;
+  transition: 0.3s; /* Adjusted transition for consistency */
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+}
+
+.btns button {
+  padding: 0 0.5rem; /* Added missing semicolon */
+}
+
+.plans {
+  text-align: center;
+}
+
+.linkStart {
+  margin-top: 4rem;
+}
+
+.containerPlans {
+  overflow: hidden;
+}

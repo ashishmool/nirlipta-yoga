@@ -1,0 +1,77 @@
+.instructors h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.instructors {
+  margin-bottom: 4rem;
+}
+
+.containerInstructors {
+  overflow: hidden;
+}
+
+.listInstructors {
+  display: flex;
+  padding: 1rem 0;
+  position: relative;
+  transition: .3s;
+
+}
+
+.listInstructors li {
+  list-style: none;
+  text-align: center;
+  min-width: 20%;
+  margin: 0 calc(20% / 8);
+  padding: 1rem 0.5rem;
+  transition: .2s;
+}
+
+.listInstructors li:hover {
+  background: var(--cor-5);
+  color: var(--cor-1);
+}
+
+.btns {
+  text-align: center;
+
+  margin-bottom: 2rem;
+}
+
+.btns button {
+  padding: 0 0.5rem
+}
+
+.img {
+  border-radius: 50%;
+  width: 8.5rem;
+  height: 8.5rem
+}
+
+.name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0.2rem 0.5rem;
+}
+
+@media all and (max-width: 800px) {
+  .listInstructors li {
+    min-width: 30%;
+    margin: 0 calc(10% / 6)
+  }
+}
+
+@media all and (max-width: 550px) {
+  .listInstructors li {
+    min-width: 45%;
+    margin: 0 calc(10% / 4)
+  }
+}
+
+@media all and (max-width: 390px) {
+  .listInstructors li {
+    min-width: 90%;
+    margin: 0 calc(10% / 2)
+  }
+}

@@ -1,0 +1,40 @@
+.containerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 75rem;
+  width: 100%;
+  padding: 0 0.7rem;
+  margin: 0 auto;
+}
+
+.header {
+  position: fixed;
+  z-index: 99999;
+  width: 100%;
+  transition: .5s;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  align-items: center;
+}
+
+.headerScrolled {
+  background: rgba(250, 250, 247, 0.95);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+  height: 4rem;
+}
+
+@media all and (max-width:1150px) {
+  .headerScrolled {
+    height: 6rem;
+  }
+}
