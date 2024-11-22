@@ -5,6 +5,10 @@ import { FaLeaf } from "react-icons/fa";
 import { LuVegan } from "react-icons/lu";
 import { BiFoodTag } from "react-icons/bi";
 import { PiBowlFoodFill } from "react-icons/pi";
+import {Badge} from "@/components/ui/badge.tsx";
+
+import { format,differenceInDays, parseISO } from "date-fns";
+
 
 
 
@@ -15,6 +19,19 @@ const Retreats: React.FC = () => {
     const totalPages = dummyRetreats.length;
 
     const currentRetreat = dummyRetreats[currentPage - 1]; // Page number maps to index
+
+    const startDate = currentRetreat.dates[0]?.startDate;
+    const endDate = currentRetreat.dates[0]?.endDate;
+
+    // Format the dates
+    const formattedStartDate = startDate ? format(parseISO(startDate), "dd.MM.yyyy") : "Unknown";
+    const formattedEndDate = endDate ? format(parseISO(endDate), "dd.MM.yyyy") : "Unknown";
+
+    // Calculate the difference in days
+    const numberOfNights = startDate && endDate
+        ? differenceInDays(parseISO(endDate), parseISO(startDate))
+        : 0;
+
 
     // Pagination Logic
     const goToNextPage = () => {
@@ -49,6 +66,33 @@ const Retreats: React.FC = () => {
             <div className="flex flex-wrap lg:flex-nowrap w-full gap-6">
                 {/* Left Section */}
                 <div className="left-section lg:w-3/5 flex flex-col h-screen sticky top-0 space-y-6 relative">
+
+
+
+                    {/* Badge */}
+                    <Badge
+                        className="absolute z-10 text-white rounded-none mt-20 left-0 px-4 py-2"
+                        style={{ backgroundColor: "#A38F85" }}
+                    >
+                        {startDate && endDate ? (
+                            <>
+                                <strong className="text-xl font-bold">{numberOfNights}</strong>{" "}
+                                <span className="text-xs">Nights</span>{"/"}
+                                <strong className="text-xl font-bold">{numberOfNights + 1}</strong>{" "}
+                                <span className="text-xs">Days</span>
+                            </>
+                        ) : (
+                            "Duration Not Available"
+                        )}
+                    </Badge>
+
+
+
+                    {/* Dates Display */}
+                    <div className="absolute z-10 text-white text-sm top-4 right-4 bg-opacity-50 bg-black px-4 py-2 rounded">
+                        From: <strong>{formattedStartDate}</strong> to <strong>{formattedEndDate}</strong>
+                    </div>
+
                     {/* Main Image */}
                     <div className="main-image w-full h-[600px] relative">
                         <img

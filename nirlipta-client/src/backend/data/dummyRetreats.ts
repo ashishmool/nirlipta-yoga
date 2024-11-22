@@ -20,10 +20,16 @@ export const dummyRetreats = [
             "Nature Walk Meditation",
             "Plant-Based Cooking Workshop",
         ],
-        date: "2024-12-20",
+        dates: [
+
+            {
+                startDate: "2024-12-20",
+                endDate: "2024-12-23",
+            },
+        ],
         time: "8:00 AM - 6:00 PM",
         venueAddress: "Lakeview Retreat Center, Pokhara, Nepal",
-        price: 0,
+        price: 675,
         sponsors: ["Ayurveda Association", "Eco Retreats"],
         eventContactNumber: "+977-9801234567",
         socialLink: "https://www.instagram.com/DivineWellness",
@@ -34,7 +40,7 @@ export const dummyRetreats = [
         ],
         SingleRoomsQuantity: 5,
         MealOptions: ["Vegetarian", "Vegan", "Non-Vegetarian"],
-        MaxParticipants: 30,
+        MaxParticipants: 20,
     },
     {
         id: 3,
@@ -56,10 +62,16 @@ export const dummyRetreats = [
             "Guided Yoga Sessions",
             "Healthy Eating Workshop",
         ],
-        date: "2024-12-25",
+        dates: [
+
+            {
+                startDate: "2024-12-27",
+                endDate: "2024-12-29",
+            },
+        ],
         time: "7:00 AM - 7:00 PM",
         venueAddress: "Mountain View Lodge, Manang, Nepal",
-        price: 3000,
+        price: 200,
         sponsors: ["Mindful Living Society", "Health Conscious Nepal"],
         eventContactNumber: "+977-9807654321",
         socialLink: "https://www.mountainmindfulness.com",
@@ -71,41 +83,5 @@ export const dummyRetreats = [
         SingleRoomsQuantity: 8,
         MealOptions: ["Vegetarian", "Non-Vegetarian", "Vegan", "Special Arrangements"],
         MaxParticipants: 40,
-    },
-    {
-        id: 4,
-        title: "Eco-Healing & Adventure Retreat",
-        description: "Reconnect with nature through eco-healing and adventure activities.",
-        organizer: "Eco Harmony Nepal",
-        guests: [
-            {
-                name: "Dr. Susan Green - Eco-Therapist",
-                photo: "images/guests/susan_green.jpg",
-            },
-            {
-                name: "Ram Thapa - Adventure Guide",
-                photo: "images/guests/ram_thapa.jpg",
-            },
-        ],
-        featuringEvents: [
-            "Eco-Healing Workshop",
-            "Tree Planting Drive",
-            "River Rafting",
-        ],
-        date: "2024-12-30",
-        time: "10:00 AM - 6:00 PM",
-        venueAddress: "Riverfront Eco Camp, Chitwan, Nepal",
-        price: 2500,
-        sponsors: ["Nature Conservation Fund", "Eco Retreats Alliance"],
-        eventContactNumber: "+977-9818765432",
-        socialLink: "https://www.ecoharmony.com",
-        photos: [
-            "images/resources/retreat6.jpg",
-            "images/resources/retreat5.jpg",
-            "images/resources/retreat4.jpeg",
-        ],
-        SingleRoomsQuantity: 6,
-        MealOptions: ["Vegetarian", "Vegan"],
-        MaxParticipants: 25,
     },
 ];
