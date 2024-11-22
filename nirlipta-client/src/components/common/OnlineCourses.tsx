@@ -60,11 +60,11 @@ const OnlineCourses: React.FC = () => {
     };
 
     return (
-        <div className="online-courses-page flex flex-col sm:flex-row gap-8 mb-8">
+        <div className="online-courses-page flex flex-col sm:flex-row gap-8 mb-8 mt-10">
             {/* Sidebar */}
-            <div className="sidebar p-6 rounded-lg w-full sm:w-1/4 relative">
+            <div className="sidebar p-6 rounded-lg w-full sm:w-1/4 relative mt-4">
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Online Courses</h2>
-                <p className="text-gray-600 mb-6">Transform your mind and body</p>
+                <p className="text-gray-600 mb-6">by Category</p>
                 <ScrollArea className="w-full h-120">
                     <ul className="space-y-6">
                         {categories.map((category) => (

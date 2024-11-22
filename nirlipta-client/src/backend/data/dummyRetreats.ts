@@ -1,45 +1,19 @@
 // dummyRetreats.ts
 export const dummyRetreats = [
     {
-        id: 1,
-        title: "Weekend Yoga and Wellness Retreat",
-        description: "Join us for a rejuvenating weekend filled with yoga, meditation, and soulful music.",
-        organizer: "Soulful Retreats Pvt. Ltd.",
-        guests: [
-            "Dr. Stuart Miller - Respiratory Physician",
-            "Saroj Maharjan - Classical Flute Artist",
-            "Bhaagavata Das - Bhakti Yoga Speaker",
-        ],
-        featuringEvents: [
-            "Yoga Session",
-            "Live Musical Discourse",
-            "Guided Meditation",
-            "Vegetarian Dinner",
-        ],
-        date: "2024-12-15",
-        time: "9:00 AM - 5:00 PM",
-        venueAddress: "Green Valley Resort, Nagarkot, Nepal",
-        price: 2000,
-        sponsors: ["Healthy Living Foundation", "Yoga Alliance International"],
-        eventContactNumber: "+977-9812345678",
-        socialLink: "https://www.facebook.com/SoulfulRetreats",
-        photos: [
-            "images/resources/retreat3.jpg",
-            "images/resources/retreat2.jpg",
-            "images/resources/retreat1.jpg",
-        ],
-        SingleRoomsQuantity: 0,
-        MealOptions: ["Vegetarian", "Non-Vegetarian", "Vegan"],
-        MaxParticipants: 8,
-    },
-    {
         id: 2,
         title: "Bhakti & Nature: Spiritual Retreat",
         description: "A serene retreat focusing on the essence of Bhakti Yoga and connecting with nature.",
         organizer: "Divine Wellness Initiative",
         guests: [
-            "Bhaagavata Das - Bhakti Yoga Speaker",
-            "Anuja Shrestha - Ayurveda Expert",
+            {
+                name: "Bhaagavata Das - Bhakti Yoga Speaker",
+                photo: "images/guests/bg-das.jpg",
+            },
+            {
+                name: "Anuja Shrestha - Ayurveda Expert",
+                photo: "images/guests/guest-flute.jpg",
+            },
         ],
         featuringEvents: [
             "Kirtan Night",
@@ -59,7 +33,7 @@ export const dummyRetreats = [
             "images/resources/retreat4.jpeg",
         ],
         SingleRoomsQuantity: 5,
-        MealOptions: ["Vegetarian", "Vegan"],
+        MealOptions: ["Vegetarian", "Vegan", "Non-Vegetarian"],
         MaxParticipants: 30,
     },
     {
@@ -67,7 +41,16 @@ export const dummyRetreats = [
         title: "Mountain Mindfulness Retreat",
         description: "Experience mindfulness in the serene mountains with guided meditation and yoga.",
         organizer: "Himalayan Wellness Center",
-        guests: ["Dr. John Doe - Mindfulness Coach", "Asha Rana - Yoga Instructor"],
+        guests: [
+            {
+                name: "Dr. John Doe - Mindfulness Coach",
+                photo: "images/guests/john_doe.jpg",
+            },
+            {
+                name: "Asha Rana - Yoga Instructor",
+                photo: "images/guests/asha_rana.jpg",
+            },
+        ],
         featuringEvents: [
             "Mindful Hiking",
             "Guided Yoga Sessions",
@@ -86,7 +69,7 @@ export const dummyRetreats = [
             "images/resources/retreat1.jpg",
         ],
         SingleRoomsQuantity: 8,
-        MealOptions: ["Vegetarian", "Non-Vegetarian", "Vegan", "Gluten-Free"],
+        MealOptions: ["Vegetarian", "Non-Vegetarian", "Vegan", "Special Arrangements"],
         MaxParticipants: 40,
     },
     {
@@ -95,8 +78,14 @@ export const dummyRetreats = [
         description: "Reconnect with nature through eco-healing and adventure activities.",
         organizer: "Eco Harmony Nepal",
         guests: [
-            "Dr. Susan Green - Eco-Therapist",
-            "Ram Thapa - Adventure Guide",
+            {
+                name: "Dr. Susan Green - Eco-Therapist",
+                photo: "images/guests/susan_green.jpg",
+            },
+            {
+                name: "Ram Thapa - Adventure Guide",
+                photo: "images/guests/ram_thapa.jpg",
+            },
         ],
         featuringEvents: [
             "Eco-Healing Workshop",

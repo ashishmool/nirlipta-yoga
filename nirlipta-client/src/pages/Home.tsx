@@ -10,8 +10,8 @@ export default function Home() {
         <div className="md:container container-fluid mt-4">
             <Journey/>
             <OnlineCourses/>
-            <Explore/>
             <Retreats/>
+            <Explore/>
             <Partners />
             {/*<Hero />*/}
             {/*<Features />*/}

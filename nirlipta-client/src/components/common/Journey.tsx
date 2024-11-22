@@ -67,9 +67,9 @@ const Journey: React.FC = () => {
 
             {/* Image Section */}
             <div className="relative w-full max-w-md mt-10 md:mt-0">
-                <div className="absolute -top-10 left-0 text-xs opacity-70">
-                    <strong>Instructor</strong>
-                    <span className="block">Nivedita Pradhan</span>
+                <div className="absolute -top-6 left-0 text-xs opacity-70">
+                    <span className="block"><strong>Photo: Nivedita Pradhan | </strong>20.10.2024</span>
+
                 </div>
                 <div className="relative">
                     <div className="absolute top-16 -left-2 w-12 h-40 bg-gray-300 rounded-tr-[4rem]"></div>
