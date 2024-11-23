@@ -55,7 +55,7 @@ const Retreats: React.FC = () => {
     return (
         <div className="retreats-page max-w-screen-xl mx-auto flex flex-col items-center p-6">
                 {/* Header */}
-                <div className="relative sm:mx-auto mx-3 pt-[50px] pb-[50px] mt-10 text-center">
+                <div className="relative sm:mx-auto mx-3 pt-[10px] pb-[50px] text-center">
                     <div className="container">
                         <h1 className="sm:text-5xl text-4xl font-bold capitalize mb-6">Retreats</h1>
                         <p className="text-gray-700 text-lg sm:w-[100%] mx-auto">
@@ -140,7 +140,7 @@ const Retreats: React.FC = () => {
 
 
                             {/* Pagination Controls */}
-                            <div className="pagination-controls bg-white shadow-md rounded-lg px-4 py-2 flex items-center space-x-2">
+                            <div className="pagination-controls  px-4 py-2 flex items-center space-x-2">
                                 <button
                                     onClick={goToPreviousPage}
                                     disabled={currentPage === 1}

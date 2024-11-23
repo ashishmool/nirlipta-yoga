@@ -60,6 +60,7 @@ const OnlineCourses: React.FC = () => {
     };
 
     return (
+
         <div className="online-courses-page flex flex-col sm:flex-row gap-8 mb-8 mt-10">
             {/* Sidebar */}
             <div className="sidebar p-6 rounded-lg w-full sm:w-1/4 relative mt-4">
@@ -94,6 +95,8 @@ const OnlineCourses: React.FC = () => {
                     <ScrollBar orientation="vertical" />
                 </ScrollArea>
             </div>
+
+
 
             {/* Course List */}
             <div className="course-list w-full sm:w-3/4">

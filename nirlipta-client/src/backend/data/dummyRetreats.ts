@@ -49,12 +49,12 @@ export const dummyRetreats = [
         organizer: "Himalayan Wellness Center",
         guests: [
             {
-                name: "Dr. John Doe - Mindfulness Coach",
-                photo: "images/guests/john_doe.jpg",
+                name: "Ashish Mool - Mindfulness Coach",
+                photo: "images/guests/inst1.jpg",
             },
             {
                 name: "Asha Rana - Yoga Instructor",
-                photo: "images/guests/asha_rana.jpg",
+                photo: "images/guests/inst4.jpg",
             },
         ],
         featuringEvents: [
