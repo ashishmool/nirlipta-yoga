@@ -10,7 +10,7 @@ export { default as Brands } from './common/Partners.tsx';
 // export { default as MoreProducts } from './home/MoreProducts'
 
 // Collections
-export { default as HeroCollections } from './collections/HeroCollections';
+// export { default as HeroCollections } from './collections/HeroCollections';
 // export { default as JewelleryByCollection } from './collections/JewelleryByCollection.tsx';
 
 // // Jewellery

@@ -1,10 +1,10 @@
 import React from "react";
 import fotoJourney from "../../assets/journey.jpg";
-import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import Auth from "../auth/Auth.tsx";
-import { FaUserPlus } from 'react-icons/fa'; // Importing the Font Awesome icon
-import Signup from "../auth/Signup";
+// import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog.tsx";
+// import {Button} from "@/components/ui/button.tsx";
+// import Auth from "../auth/Auth.tsx";
+// import { FaUserPlus } from 'react-icons/fa'; // Importing the Font Awesome icon
+// import Signup from "../auth/Signup";
 import DirectSignup from "@/components/auth/DirectSignup.tsx";
 
 

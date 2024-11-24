@@ -54,7 +54,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 
 // ICONS
 import { CiSearch } from "react-icons/ci";
@@ -62,7 +62,7 @@ import { LuPackagePlus } from "react-icons/lu";
 import { SlSettings } from "react-icons/sl";
 import { CgLogOut } from "react-icons/cg";
 import { RiShoppingCartLine } from "react-icons/ri";
-import { HiOutlineShoppingCart } from "react-icons/hi2";
+// import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { FaStoreAlt } from "react-icons/fa";
 import { RiGalleryView2 } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
