@@ -24,8 +24,7 @@ import {
   AboutDetails,
   BrowseDetails,
 } from "./pages";
-import ResetDetails from "./pages/ResetDetails";
-// import {Collections} from "@/pages";
+
 
 
 export default function App() {
@@ -88,7 +87,7 @@ export default function App() {
             <Route path='about' element={<AboutDetails />} />
             {/*<Route path='cart' element={<CartDetails />} />*/}
             <Route path='collections' element={<BrowseDetails />} />
-            <Route path='reset' element={<ResetDetails />} />
+            {/*<Route path='reset' element={<ResetDetails />} />*/}
             {/*<Route path='contact' element={<Contact />} />*/}
 
             {/*/!* If NOT Logged-in *!/*/}

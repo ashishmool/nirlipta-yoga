@@ -1,5 +1,3 @@
-// import {Brands, Features, Hero, MoreProducts, Newsletter} from "@/components";
-// import {Explore} from "@/components";
 import Workshops from "@/components/common/Workshops.tsx";
 import Journey from "@/components/common/Journey.tsx";
 import Retreats from "@/components/common/Retreats.tsx";
@@ -13,14 +11,6 @@ export default function Home() {
             <Workshops/>
             <Retreats/>
             <Partners />
-
-
-            {/*<Explore/>*/}
-            {/*<Hero />*/}
-            {/*<Features />*/}
-            {/*<MoreProducts />*/}
-
-            {/*<Newsletter />*/}
         </div>
     );
 

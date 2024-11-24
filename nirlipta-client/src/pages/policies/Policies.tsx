@@ -1,5 +1,5 @@
 import { Cookies, Header, Privacy, Terms } from "@/components";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/separator.tsx";
 
 export default function Policies() {
     return (
