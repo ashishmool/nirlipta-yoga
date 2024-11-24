@@ -53,9 +53,9 @@ const Retreats: React.FC = () => {
     };
 
     return (
-        <div className="retreats-page max-w-screen-xl mx-auto flex flex-col items-center p-6">
+        <div className="retreats-page max-w-screen-xl mx-auto flex flex-col items-center p-6 mb-16">
                 {/* Header */}
-                <div className="relative sm:mx-auto mx-3 pt-[10px] pb-[50px] text-center">
+                <div className="relative sm:mx-auto mx-3 pt-[10px] pb-[20px] text-center">
                     <div className="container">
                         <h1 className="sm:text-5xl text-4xl font-bold capitalize mb-6">Retreats</h1>
                         <p className="text-gray-700 text-lg sm:w-[100%] mx-auto">
@@ -65,7 +65,7 @@ const Retreats: React.FC = () => {
                 </div>
             <div className="flex flex-wrap lg:flex-nowrap w-full gap-6">
                 {/* Left Section */}
-                <div className="left-section lg:w-3/5 flex flex-col h-screen sticky top-0 space-y-6 relative">
+                <div className="left-section lg:w-3/5 flex flex-col sticky top-0 space-y-6 relative">
 
 
 
@@ -186,7 +186,7 @@ const Retreats: React.FC = () => {
 
                 {/* Right Section */}
 
-                <div className="right-section lg:w-2/5 p-8 flex flex-col h-screen sticky top-0 justify-between">
+                <div className="right-section lg:w-2/5 p-8 flex flex-col sticky top-0 justify-between">
                     {/* Retreat Details */}
                     <div className="retreat-details space-y-6">
                         <h3 className="retreat-title font-bold text-2xl text-gray-800">{currentRetreat.title}</h3>

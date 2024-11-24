@@ -22,11 +22,10 @@ import {
   Error,
   Policies,
   AboutDetails,
-  Contact,
   BrowseDetails,
 } from "./pages";
 import ResetDetails from "./pages/ResetDetails";
-import {Collections} from "@/pages";
+// import {Collections} from "@/pages";
 
 
 export default function App() {
@@ -90,7 +89,7 @@ export default function App() {
             {/*<Route path='cart' element={<CartDetails />} />*/}
             <Route path='collections' element={<BrowseDetails />} />
             <Route path='reset' element={<ResetDetails />} />
-            <Route path='contact' element={<Contact />} />
+            {/*<Route path='contact' element={<Contact />} />*/}
 
             {/*/!* If NOT Logged-in *!/*/}
             {/*<Route path='verify' element={isLoggedin ? <VerifyDetails /> : <Navigate to="/" />} />*/}
@@ -102,7 +101,7 @@ export default function App() {
             {/*<Route path='edit' element={isLoggedin ? <EditDetails /> : <Navigate to="/" />} />*/}
 
             {/* Custom Routes */}
-            <Route path='collections/:id' element={<Collections />} />
+            {/*<Route path='collections/:id' element={<Collections />} />*/}
             {/*<Route path='jewelleries/:id' element={<JewelleryDetails />} />*/}
             {/*<Route path="store/:id" element={<StoreDetails />} />*/}
 

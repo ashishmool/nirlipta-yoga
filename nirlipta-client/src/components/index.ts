@@ -5,18 +5,18 @@ export { default as Newsletter } from './common/Newsletter';
 export { default as Brands } from './common/Partners.tsx';
 
 // Home
-export { default as Hero } from './home/Hero';
-export { default as Features } from './home/Features';
-export { default as MoreProducts } from './home/MoreProducts'
+// export { default as Hero } from './home/Hero';
+// export { default as Features } from './home/Features';
+// export { default as MoreProducts } from './home/MoreProducts'
 
 // Collections
 export { default as HeroCollections } from './collections/HeroCollections';
-export { default as JewelleryByCollection } from './collections/JewelleryByCollection.tsx';
+// export { default as JewelleryByCollection } from './collections/JewelleryByCollection.tsx';
 
-// Jewellery
-export { default as Perfume } from '@/components/jewellery/Jewellery.tsx';
-export { default as Reviews } from '@/components/jewellery/Reviews';
-export { default as MorePerfumes } from '@/components/jewellery/MoreJewellery.tsx';
+// // Jewellery
+// export { default as Perfume } from '@/components/jewellery/Jewellery.tsx';
+// export { default as Reviews } from '@/components/jewellery/Reviews';
+// export { default as MorePerfumes } from '@/components/jewellery/MoreJewellery.tsx';
 
 // Auth
 export { default as Auth } from './auth/Auth';
@@ -31,19 +31,19 @@ export { default as Terms } from './policies/Terms';
 export { default as About } from '@/pages/about/About';
 
 // Contact
-export { default as Contact } from './contact/ContactForm';
+// export { default as Contact } from './contact/ContactForm';
 
 // Cart
 // export { default as Cart } from './cart/Cart';
 
 // Store
-export { default as Store } from './store/Store.tsx';
+// export { default as Store } from './store/Store.tsx';
 
 // Settings
-export { default as Settings } from './settings/Settings.tsx';
+// export { default as Settings } from './settings/Settings.tsx';
 
 // Edit 
-export { default as EditDetails } from './edit/Edit.tsx';
+// export { default as EditDetails } from './edit/Edit.tsx';
 
 // Explore
 export { default as Explore } from '@/components/explore/Explore.tsx';
@@ -53,7 +53,7 @@ export { default as Reset } from './reset/Reset.tsx';
 export { default as CompleteReset } from './reset/CompleteReset.tsx';
 
 // Update
-export { default as Update } from './update/Update.tsx';
+// export { default as Update } from './update/Update.tsx';
 
 // Verify
 export { default as Verify } from './verify/Verify.tsx';

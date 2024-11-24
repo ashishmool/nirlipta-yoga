@@ -1,4 +1,5 @@
-import {Brands, Explore, Features, Hero, MoreProducts, Newsletter} from "@/components";
+// import {Brands, Features, Hero, MoreProducts, Newsletter} from "@/components";
+// import {Explore} from "@/components";
 import Workshops from "@/components/common/Workshops.tsx";
 import Journey from "@/components/common/Journey.tsx";
 import Retreats from "@/components/common/Retreats.tsx";
@@ -11,8 +12,10 @@ export default function Home() {
             <Journey/>
             <Workshops/>
             <Retreats/>
-            <Explore/>
             <Partners />
+
+
+            {/*<Explore/>*/}
             {/*<Hero />*/}
             {/*<Features />*/}
             {/*<MoreProducts />*/}
