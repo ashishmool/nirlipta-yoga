@@ -9,7 +9,7 @@ import { checkSession } from "@/backend/services/auth/checkSession";
 
 // STATES
 import useUserState from "@/lib/states/userStates";
-import useCheckStoreState from "@/lib/states/userStoreState";
+// import useCheckStoreState from "@/lib/states/userStoreState";
 
 // UI
 import { Navbar, Footer } from "@/components";
@@ -23,10 +23,10 @@ import {
   Policies,
   AboutDetails,
   Contact,
-  CartDetails,
   BrowseDetails,
 } from "./pages";
 import ResetDetails from "./pages/ResetDetails";
+import {Collections} from "@/pages";
 
 
 export default function App() {
@@ -87,7 +87,7 @@ export default function App() {
             <Route path='*' element={<Error />} />
             <Route path='policies' element={<Policies />} />
             <Route path='about' element={<AboutDetails />} />
-            <Route path='cart' element={<CartDetails />} />
+            {/*<Route path='cart' element={<CartDetails />} />*/}
             <Route path='collections' element={<BrowseDetails />} />
             <Route path='reset' element={<ResetDetails />} />
             <Route path='contact' element={<Contact />} />
@@ -101,8 +101,8 @@ export default function App() {
 
             {/*<Route path='edit' element={isLoggedin ? <EditDetails /> : <Navigate to="/" />} />*/}
 
-            {/*/!* Custom Routes *!/*/}
-            {/*<Route path='collections/:id' element={<Collections />} />*/}
+            {/* Custom Routes */}
+            <Route path='collections/:id' element={<Collections />} />
             {/*<Route path='jewelleries/:id' element={<JewelleryDetails />} />*/}
             {/*<Route path="store/:id" element={<StoreDetails />} />*/}
 

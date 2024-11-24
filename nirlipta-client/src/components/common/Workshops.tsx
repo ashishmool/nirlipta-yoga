@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
-import { dummyOnlineCourses } from "./../../backend/data/dummyOnlineCourses";
+import { dummyWorkshops } from "../../backend/data/dummyWorkshops.ts";
 
 interface Course {
     photos: string[];
@@ -29,15 +29,15 @@ const categories: Category[] = [
     { id: 3, name: "Meditation", label: "Mindfulness Meditation" },
 ];
 
-const OnlineCourses: React.FC = () => {
+const Workshops: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const coursesPerPage = 3;
 
     // Filtered courses based on the selected category
     const filteredCourses = selectedCategoryId
-        ? dummyOnlineCourses.filter(course => course.categoryId === selectedCategoryId)
-        : dummyOnlineCourses;
+        ? dummyWorkshops.filter(course => course.categoryId === selectedCategoryId)
+        : dummyWorkshops;
 
     // Total number of pages based on the filtered courses
     const totalPages = Math.ceil(filteredCourses.length / coursesPerPage);
@@ -64,7 +64,7 @@ const OnlineCourses: React.FC = () => {
         <div className="online-courses-page flex flex-col sm:flex-row gap-8 mb-8 mt-10">
             {/* Sidebar */}
             <div className="sidebar p-6 rounded-lg w-full sm:w-1/4 relative mt-4">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Online Courses</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Workshops</h2>
                 <p className="text-gray-600 mb-6">by Category</p>
                 <ScrollArea className="w-full h-120">
                     <ul className="space-y-6">
@@ -183,4 +183,4 @@ const OnlineCourses: React.FC = () => {
     );
 };
 
-export default OnlineCourses;
+export default Workshops;

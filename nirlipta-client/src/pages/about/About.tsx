@@ -1,5 +1,4 @@
-import { Brands } from "..";
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import aboutVideo from "../../assets/videos/about-nirlipta.mp4"
 import aboutPhoto from "../../assets/about-us.jpg"
 
@@ -9,13 +8,13 @@ export default function About() {
     // Update the page title
     document.title = `Nirlipta Yoga | About`;
 
-    // Scroll top when click on Link
-    function scrollTopFunc() {
-        window.scrollTo({
-            top: -10,
-            behavior: 'instant'
-        });
-    }
+    // // Scroll top when click on Link use when required
+    // function scrollTopFunc() {
+    //     window.scrollTo({
+    //         top: -10,
+    //         behavior: 'instant'
+    //     });
+    // }
 
     return (
         <div className="flex flex-col min-h-[100dvh]">
@@ -53,20 +52,20 @@ export default function About() {
                 </div>
             </section>
 
-            {/*/!* Header *!/*/}
-            {/*<header className="relative bg-[#F5F5F5] mt-10 py-20 md:py-32 lg:py-40 sm:rounded-lg overflow-hidden mb-16">*/}
-            {/*    <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover z-0">*/}
-            {/*        <source src={aboutVideo} />*/}
-            {/*        Your browser does not support the video tag.*/}
-            {/*    </video>*/}
-            {/*    <div className="container mx-auto px-4 md:px-6 lg:px-8 text-center relative z-10">*/}
-            {/*        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Nirlipta Yoga</h1>*/}
-            {/*        <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto">*/}
-            {/*            Elevate your senses with Yoga lifestyle and learn from the best.*/}
-            {/*        </p>*/}
-            {/*    </div>*/}
-            {/*    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-5"></div> /!* Optional overlay for better text readability *!/*/}
-            {/*</header>*/}
+            {/* Header */}
+            <header className="relative bg-[#F5F5F5] mt-10 py-20 md:py-32 lg:py-40 sm:rounded-lg overflow-hidden mb-16">
+                <video autoPlay loop muted className="absolute top-0 left-0 w-full h-full object-cover z-0">
+                    <source src={aboutVideo} />
+                    Your browser does not support the video tag.
+                </video>
+                <div className="container mx-auto px-4 md:px-6 lg:px-8 text-center relative z-10">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">Nirlipta Yoga</h1>
+                    <p className="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto">
+                        Elevate your senses with Yoga lifestyle and learn from the best.
+                    </p>
+                </div>
+                <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-5"></div> {/* Optional overlay for better text readability */}
+            </header>
 
 
         </div>

@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 
 // SERVICES
-import { getUserMetaData } from '@/backend/services/user/getUser';
-import { getStore } from '@/backend/services/store/getStore';
-import { logout } from '@/backend/services/auth/logout';
-import { getCartItems } from '@/backend/services/cart/getCartItems';
-import { emptyCart } from '@/backend/services/cart/emptyCart';
-import { getUserExtraMetaData } from '@/backend/services/user/getUserExtraMetaData';
+// import { getUserMetaData } from '@/backend/services/user/getUser';
+// import { getStore } from '@/backend/services/store/getStore';
+// import { logout } from '@/backend/services/auth/logout';
+// import { getCartItems } from '@/backend/services/cart/getCartItems';
+// import { emptyCart } from '@/backend/services/cart/emptyCart';
+// import { getUserExtraMetaData } from '@/backend/services/user/getUserExtraMetaData';
 
 // Components
 import Auth from '@/components/auth/Auth'
@@ -132,51 +132,51 @@ export default function Navbar() {
         [cartItems, setCartItems] = useState<any[] | null>([]),
         [cartItemsSum, setCartItemsSum] = useState<number>();
 
-    // handle get cart items function
-    async function handleGetCartItems() {
-        try {
-            const res = await getCartItems(loggedinUserId);
-
-            setNumOfCartItems(res.total == 0 ? null : res.total);
-            setCartItems(res.documents.length == 0 ? null : res.documents);
-
-            // Initialize the total sum
-            let collectTheSums = 0;
-
-            // Loop through each cart item to calculate the sum
-            for (let i = 0; i < res.documents.length; i++) {
-                const item = res.documents[i];
-                const sum = item.defaultPrice * item.quantity + (item.size === 50 ? 0 : item.size === 100 ? 50 : item.size === 200 ? 100 : 0);
-                collectTheSums += sum;
-            }
-
-            // Set the total sum
-            setCartItemsSum(collectTheSums);
-        } catch (error) {
-            console.error('Error fetching cart items:', error);
-        }
-    }
-
-    // handle empty cart items
-    async function handleEmptyCart() {
-        setLoadingEmptyCart(true)
-        await emptyCart(loggedinUserId)
-            .then((res) => {
-                if (res === true) {
-                    setCartItems(null)
-                    setNumOfCartItems(null)
-                    setCartState(!cartState)
-                    toast.success('Deleted all Items in your cart successfully')
-                    setLoadingEmptyCart(false)
-                } else {
-                    setLoadingEmptyCart(false)
-                }
-            })
-    }
-
-    useEffect(() => {
-        handleGetCartItems();
-    }, [cartState])
+    // // handle get cart items function
+    // async function handleGetCartItems() {
+    //     try {
+    //         const res = await getCartItems(loggedinUserId);
+    //
+    //         setNumOfCartItems(res.total == 0 ? null : res.total);
+    //         setCartItems(res.documents.length == 0 ? null : res.documents);
+    //
+    //         // Initialize the total sum
+    //         let collectTheSums = 0;
+    //
+    //         // Loop through each cart item to calculate the sum
+    //         for (let i = 0; i < res.documents.length; i++) {
+    //             const item = res.documents[i];
+    //             const sum = item.defaultPrice * item.quantity + (item.size === 50 ? 0 : item.size === 100 ? 50 : item.size === 200 ? 100 : 0);
+    //             collectTheSums += sum;
+    //         }
+    //
+    //         // Set the total sum
+    //         setCartItemsSum(collectTheSums);
+    //     } catch (error) {
+    //         console.error('Error fetching cart items:', error);
+    //     }
+    // }
+    //
+    // // handle empty cart items
+    // async function handleEmptyCart() {
+    //     setLoadingEmptyCart(true)
+    //     await emptyCart(loggedinUserId)
+    //         .then((res) => {
+    //             if (res === true) {
+    //                 setCartItems(null)
+    //                 setNumOfCartItems(null)
+    //                 setCartState(!cartState)
+    //                 toast.success('Deleted all Items in your cart successfully')
+    //                 setLoadingEmptyCart(false)
+    //             } else {
+    //                 setLoadingEmptyCart(false)
+    //             }
+    //         })
+    // }
+    //
+    // useEffect(() => {
+    //     handleGetCartItems();
+    // }, [cartState])
 
 
     // Scroll top when click on Link
@@ -190,70 +190,70 @@ export default function Navbar() {
     // Get the current use Feedbacks to update them when user logged-out
     const { setIsLiked } = useIsLiked();
 
-    // handle Logout func.
-    async function handleLogout() {
-        setLogoutSpinner(true)
-        const res = await logout();
-        if (res) {
-            window.location.reload()
-            setIsLoggedin(false)
-            // setLogoutSpinner(false)
-            setIsLiked(false)
-        } else {
-            console.log('Can not logout! something went wrong while logging out!');
-        }
-    }
+    // // handle Logout func.
+    // async function handleLogout() {
+    //     setLogoutSpinner(true)
+    //     const res = await logout();
+    //     if (res) {
+    //         window.location.reload()
+    //         setIsLoggedin(false)
+    //         // setLogoutSpinner(false)
+    //         setIsLiked(false)
+    //     } else {
+    //         console.log('Can not logout! something went wrong while logging out!');
+    //     }
+    // }
 
-    // Get the logged in user data
-    async function getLoggedinUser() {
-        const userMetaData = await getUserMetaData();
-        if (userMetaData) {
-            setUserMetaData(userMetaData);
-            setLoggedinUserId(userMetaData.$id)
-            if (userMetaData.emailVerification === false) {
-                setIsOpen(true);
-            } else {
-                setIsOpen(false);
-            }
-        } else {
-            console.log('meta data not ready');
-        }
-    }
+    // // Get the logged in user data
+    // async function getLoggedinUser() {
+    //     const userMetaData = await getUserMetaData();
+    //     if (userMetaData) {
+    //         setUserMetaData(userMetaData);
+    //         setLoggedinUserId(userMetaData.$id)
+    //         if (userMetaData.emailVerification === false) {
+    //             setIsOpen(true);
+    //         } else {
+    //             setIsOpen(false);
+    //         }
+    //     } else {
+    //         console.log('meta data not ready');
+    //     }
+    // }
 
-    // Get the Logged-in user data everytime component mount
-    useEffect(() => {
-        getLoggedinUser()
-    }, [isLoggedin])
-
-
-    // Check if user own a Store
-    useEffect(() => {
-        if (userID) {
-            if (userID.length >= 5) {
-                async function getUserPicture() {
-                    await getUserExtraMetaData(userID)
-                    .then((res) => {
-                        setUserExtraMetaDetails(res)
-                    })
-                }
-
-                async function checkStoreState() {
-                    const res = await getStore(userID);
-                    if (res.code === 404) {
-                        setIsStoreValid(false)
-                        setLoadingStoreValidation(false)
-                    } else {
-                        setStoreID(res.$id as string)
-                        setIsStoreValid(true)
-                        setLoadingStoreValidation(false)
-                    }
-                }
-                checkStoreState();
-                handleGetCartItems();
-                getUserPicture();
-            }
-        }
-    }, [isStoreValid, userID]);
+    // // Get the Logged-in user data everytime component mount
+    // useEffect(() => {
+    //     getLoggedinUser()
+    // }, [isLoggedin])
+    //
+    //
+    // // Check if user own a Store
+    // useEffect(() => {
+    //     if (userID) {
+    //         if (userID.length >= 5) {
+    //             async function getUserPicture() {
+    //                 await getUserExtraMetaData(userID)
+    //                 .then((res) => {
+    //                     setUserExtraMetaDetails(res)
+    //                 })
+    //             }
+    //
+    //             async function checkStoreState() {
+    //                 const res = await getStore(userID);
+    //                 if (res.code === 404) {
+    //                     setIsStoreValid(false)
+    //                     setLoadingStoreValidation(false)
+    //                 } else {
+    //                     setStoreID(res.$id as string)
+    //                     setIsStoreValid(true)
+    //                     setLoadingStoreValidation(false)
+    //                 }
+    //             }
+    //             checkStoreState();
+    //             handleGetCartItems();
+    //             getUserPicture();
+    //         }
+    //     }
+    // }, [isStoreValid, userID]);
 
 
     return (
@@ -645,51 +645,51 @@ export default function Navbar() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-80 p-2">
 
-                                <div className="flex flex-col gap-3">
-                                    <div className="flex items-center justify-between">
-                                        <h3 className="text-md font-semibold">Cart</h3>
-                                        <Button disabled={loadingEmptyCart} onClick={() => handleEmptyCart()} variant="ghost" size="sm"
-                                            className={`${!cartItems ? 'hidden' : ''} text-red-500 hover:bg-red-100`}>
-                                            {loadingEmptyCart ? (
-                                                <Loading w={20} />
-                                            ) : 'Empty Cart'}
-                                        </Button>
-                                    </div>
-                                    {cartItems !== null ? (
-                                        <div className="flex flex-col gap-4">
-                                            <ScrollArea className="h-[150px] w-auto pr-4">
-                                                {cartItems.map((item: any, i: number) => (
-                                                    <Link key={i} to={`${window.location.origin}/jewelleries/${item.productDetails[0].$id}`}>
-                                                        <div key={i} className="flex items-center py-1 px-1 justify-between hover:bg-slate-100 rounded-md mb-1">
-                                                            <div className="flex items-center gap-2">
-                                                                <img src={item.productDetails[0].photos[0]} className="w-10 h-10 rounded-md" alt={item.productDetails.title} />
-                                                                <div>
-                                                                    <p className="font-medium text-sm">{item.productDetails[0].title}</p>
-                                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                                        {item.quantity} x ${item.defaultPrice} (Size: {item.size}ml)
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                            <p className="font-medium text-sm">${(item.defaultPrice * item.quantity + (item.size === 50 ? 0 : item.size === 100 ? 50 : item.size === 200 ? 100 : 0)).toFixed(2)}</p>
-                                                        </div>
-                                                    </Link>
-                                                ))}
-                                            </ScrollArea>
-                                            <div className="flex items-center justify-between border-t pt-4 px-2">
-                                                <p className="font-semibold">Total <span className='text-sm text-gray- font-normal'>(Pre Taxs)</span></p>
-                                                <p className="font-medium">${cartItemsSum}</p>
-                                            </div>
-                                            <div className="flex w-full">
-                                                <Link to="/cart" onClick={scrollTopFunc} className='w-full text-center bg-gray-950 hover:bg-gray-900 shadow-md rounded-md text-white py-2 text-sm'>View Cart</Link>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="flex flex-col items-center justify-center pb-5 gap-2">
-                                            <HiOutlineShoppingCart className="w-12 h-12 text-gray-400" />
-                                            <p className="text-gray-500 text-sm">Your cart is empty</p>
-                                        </div>
-                                    )}
-                                </div>
+                                {/*<div className="flex flex-col gap-3">*/}
+                                {/*    <div className="flex items-center justify-between">*/}
+                                {/*        <h3 className="text-md font-semibold">Cart</h3>*/}
+                                {/*        <Button disabled={loadingEmptyCart} onClick={() => handleEmptyCart()} variant="ghost" size="sm"*/}
+                                {/*            className={`${!cartItems ? 'hidden' : ''} text-red-500 hover:bg-red-100`}>*/}
+                                {/*            {loadingEmptyCart ? (*/}
+                                {/*                <Loading w={20} />*/}
+                                {/*            ) : 'Empty Cart'}*/}
+                                {/*        </Button>*/}
+                                {/*    </div>*/}
+                                {/*    {cartItems !== null ? (*/}
+                                {/*        <div className="flex flex-col gap-4">*/}
+                                {/*            <ScrollArea className="h-[150px] w-auto pr-4">*/}
+                                {/*                {cartItems.map((item: any, i: number) => (*/}
+                                {/*                    <Link key={i} to={`${window.location.origin}/jewelleries/${item.productDetails[0].$id}`}>*/}
+                                {/*                        <div key={i} className="flex items-center py-1 px-1 justify-between hover:bg-slate-100 rounded-md mb-1">*/}
+                                {/*                            <div className="flex items-center gap-2">*/}
+                                {/*                                <img src={item.productDetails[0].photos[0]} className="w-10 h-10 rounded-md" alt={item.productDetails.title} />*/}
+                                {/*                                <div>*/}
+                                {/*                                    <p className="font-medium text-sm">{item.productDetails[0].title}</p>*/}
+                                {/*                                    <p className="text-xs text-gray-500 dark:text-gray-400">*/}
+                                {/*                                        {item.quantity} x ${item.defaultPrice} (Size: {item.size}ml)*/}
+                                {/*                                    </p>*/}
+                                {/*                                </div>*/}
+                                {/*                            </div>*/}
+                                {/*                            <p className="font-medium text-sm">${(item.defaultPrice * item.quantity + (item.size === 50 ? 0 : item.size === 100 ? 50 : item.size === 200 ? 100 : 0)).toFixed(2)}</p>*/}
+                                {/*                        </div>*/}
+                                {/*                    </Link>*/}
+                                {/*                ))}*/}
+                                {/*            </ScrollArea>*/}
+                                {/*            <div className="flex items-center justify-between border-t pt-4 px-2">*/}
+                                {/*                <p className="font-semibold">Total <span className='text-sm text-gray- font-normal'>(Pre Taxs)</span></p>*/}
+                                {/*                <p className="font-medium">${cartItemsSum}</p>*/}
+                                {/*            </div>*/}
+                                {/*            <div className="flex w-full">*/}
+                                {/*                <Link to="/cart" onClick={scrollTopFunc} className='w-full text-center bg-gray-950 hover:bg-gray-900 shadow-md rounded-md text-white py-2 text-sm'>View Cart</Link>*/}
+                                {/*            </div>*/}
+                                {/*        </div>*/}
+                                {/*    ) : (*/}
+                                {/*        <div className="flex flex-col items-center justify-center pb-5 gap-2">*/}
+                                {/*            <HiOutlineShoppingCart className="w-12 h-12 text-gray-400" />*/}
+                                {/*            <p className="text-gray-500 text-sm">Your cart is empty</p>*/}
+                                {/*        </div>*/}
+                                {/*    )}*/}
+                                {/*</div>*/}
                             </DropdownMenuContent>
 
                         </DropdownMenu>

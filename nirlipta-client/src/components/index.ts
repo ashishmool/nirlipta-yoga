@@ -28,13 +28,13 @@ export { default as Cookies } from './policies/Cookies';
 export { default as Terms } from './policies/Terms';
 
 // About
-export { default as About } from './about/About';
+export { default as About } from '@/pages/about/About';
 
 // Contact
 export { default as Contact } from './contact/ContactForm';
 
 // Cart
-export { default as Cart } from './cart/Cart';
+// export { default as Cart } from './cart/Cart';
 
 // Store
 export { default as Store } from './store/Store.tsx';
@@ -46,7 +46,7 @@ export { default as Settings } from './settings/Settings.tsx';
 export { default as EditDetails } from './edit/Edit.tsx';
 
 // Explore
-export { default as Explore } from './browse/Explore.tsx';
+export { default as Explore } from '@/components/explore/Explore.tsx';
 
 // Reset 
 export { default as Reset } from './reset/Reset.tsx';
