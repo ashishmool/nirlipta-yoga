@@ -1,31 +1,12 @@
 import PartnerCard from '../PartnerCard.tsx';
 
-interface Partner {
-    name: string;
-    logoUrl: string;
-    website: string;
-    category: string; // E.g., "Internet Partner", "Venue Partner"
-}
-
+import {dummyPartners} from "../../backend/data/dummyPartners";
 interface BrandsProps {
     title?: string;
 }
 
 export default function Partners({ title }: BrandsProps) {
-    const partners: Partner[] = [
-        {
-            name: "ANU Sport",
-            logoUrl: "src/assets/partners/anu-sport-logo.svg",
-            website: "https://iskconmandir.com/iskcon-canberra/",
-            category: "Sports Partner",
-        },
-        {
-            name: "ISKCON Canberra",
-            logoUrl: "src/assets/partners/iskcon-logo.svg",
-            website: "https://iskconmandir.com/iskcon-canberra/",
-            category: "Spiritual Partner",
-        },
-    ];
+
 
     return (
         <div className="rounded-xl">
@@ -47,7 +28,7 @@ export default function Partners({ title }: BrandsProps) {
 
             {/* Partners logos in a grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center items-center pb-6">
-                {partners.map((partner, index) => (
+                {dummyPartners.map((partner, index) => (
                     <a
                         key={index}
                         href={partner.website}

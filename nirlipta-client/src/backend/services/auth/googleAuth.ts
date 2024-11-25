@@ -16,7 +16,7 @@ export async function googleAuth() {
         // Mocked OAuth2 authentication logic
         const authUrl = "https://accounts.google.com/o/oauth2/v2/auth";
         const clientId = "your-google-client-id"; // Replace with your Google OAuth2 client ID
-        const redirectUri = "http://localhost:5173";
+        const redirectUri = "http://localhost:5000";
         const responseType = "token"; // or "code" if using server-side
         const scope = "profile email";
 

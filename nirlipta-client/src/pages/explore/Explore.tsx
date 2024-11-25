@@ -30,7 +30,7 @@ export default function Explore() {
                 <Link to="yoga-poses" onClick={scrollTopFunc}>
                     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                         <img
-                            src="src/assets/explore/yoga1.jpg" // Replace with a yoga pose image
+                            src="../../assets/explore/yoga1.jpg" // Replace with a yoga pose image
                             alt="Yoga Poses"
                             width={600}
                             height={400}
@@ -49,7 +49,7 @@ export default function Explore() {
                 <Link to="meditation" onClick={scrollTopFunc}>
                     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                         <img
-                            src="src/assets/explore/yoga-meditation.jpg" // Replace with a meditation image
+                            src="../../assets/explore/yoga-meditation.jpg" // Replace with a meditation image
                             alt="Meditation Practices"
                             width={600}
                             height={400}
@@ -68,7 +68,7 @@ export default function Explore() {
                 <Link to="breathing-exercises" onClick={scrollTopFunc}>
                     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                         <img
-                            src="src/assets/explore/yoga-breathing.jpg" // Replace with an image related to pranayama or breathing exercises
+                            src="../../assets/explore/yoga-breathing.jpg" // Replace with an image related to pranayama or breathing exercises
                             alt="Breathing Exercises"
                             width={600}
                             height={400}
@@ -87,7 +87,7 @@ export default function Explore() {
                 <Link to="workshops-retreats" onClick={scrollTopFunc}>
                     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                         <img
-                            src="src/assets/explore/yoga-workshop.jpg" // Replace with an image of yoga workshops or retreats
+                            src="../../assets/explore/yoga-workshop.jpg" // Replace with an image of yoga workshops or retreats
                             alt="Workshops & Retreats"
                             width={600}
                             height={400}
@@ -106,7 +106,7 @@ export default function Explore() {
                 <Link to="yoga-accessories" onClick={scrollTopFunc}>
                     <div className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                         <img
-                            src="src/assets/explore/yoga-mat.jpg" // Replace with an image of yoga mats, blocks, straps, etc.
+                            src="../../assets/explore/yoga-mat.jpg" // Replace with an image of yoga mats, blocks, straps, etc.
                             alt="Yoga Accessories"
                             width={600}
                             height={400}

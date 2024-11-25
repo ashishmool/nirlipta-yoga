@@ -10,20 +10,20 @@ import DirectSignup from "@/components/auth/DirectSignup.tsx";
 
 const cards = [
     {
-        title: "Specialized Instructors",
-        quantity: 3,
+        title: "Community Members",
+        quantity: 100,
         bgColor: "bg-[#B8978C]",
         textColor: "text-white",
     },
     {
-        title: "Courses",
+        title: "Workshops",
         quantity: 12,
         bgColor: "bg-[#9B6763]",
         textColor: "text-white",
     },
     {
-        title: "Enrolled Students",
-        quantity: 32,
+        title: "Retreats",
+        quantity: 7,
         bgColor: "bg-[#A38F85]",
         textColor: "text-white",
     },

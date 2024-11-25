@@ -53,7 +53,7 @@ export default function Signup() {
         // Alerts States if [Successful]
         { showSignupAlert, setShowSignupAlert } = useErrorAlert(),
 
-        // Set the Form type 
+        // Set the Form type
         { setFormType } = useJoinFormType(),
 
         // Show Loading Spinner while Submit
@@ -88,7 +88,7 @@ export default function Signup() {
         try {
             const results = await signup({ email: data.email.toLowerCase(), password: data.password, username: data.username });
 
-            // Check on Errors store if there's a match to the Error occurred, 
+            // Check on Errors store if there's a match to the Error occurred,
             // if there's any, error type must be send to checkOnAuthError and return with its error description
             const isTheresError = errorsStore.includes(results)
             if (isTheresError) {

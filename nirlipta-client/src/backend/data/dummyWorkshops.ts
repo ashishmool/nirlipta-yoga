@@ -1,3 +1,5 @@
+// dummyWorkshops.ts
+
 export const dummyWorkshops = [
     {
         photos: ["/images/resources/course3.jpg", "/images/resources/course1.jpg", "/images/resources/course2.jpg"],

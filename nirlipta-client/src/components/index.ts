@@ -19,7 +19,7 @@ export { default as Brands } from './common/Partners.tsx';
 // export { default as MorePerfumes } from '@/components/jewellery/MoreJewellery.tsx';
 
 // Auth
-export { default as Auth } from './auth/Auth';
+// export { default as Auth } from './auth/Auth';
 
 // Policies
 export { default as Header } from './policies/Header';
@@ -46,18 +46,18 @@ export { default as About } from '@/pages/about/About';
 // export { default as EditDetails } from './edit/Edit.tsx';
 
 // Explore
-export { default as Explore } from '@/components/explore/Explore.tsx';
+export { default as Explore } from '@/pages/explore/Explore.tsx';
 
 // Reset 
-export { default as Reset } from './reset/Reset.tsx';
+// export { default as Reset } from './reset/Reset.tsx';
 export { default as CompleteReset } from './reset/CompleteReset.tsx';
 
 // Update
 // export { default as Update } from './update/Update.tsx';
 
 // Verify
-export { default as Verify } from './verify/Verify.tsx';
-export { default as CompleteVerify } from './verify/CompleteVerify.tsx';
+// export { default as Verify } from './verify/Verify.tsx';
+// export { default as CompleteVerify } from './verify/CompleteVerify.tsx';
 
 
 
