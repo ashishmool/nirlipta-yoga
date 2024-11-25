@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema(
         enrolled_courses: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "PhysicalCourse", // Reference to the PhysicalCourse model
+                ref: "Workshop", // Reference to the Workshop model
                 default: null, // Optional
             },
         ],

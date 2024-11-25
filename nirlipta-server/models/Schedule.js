@@ -8,7 +8,7 @@ const scheduleSchema = new mongoose.Schema(
         },
         course_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
-            ref: "PhysicalCourse",
+            ref: "Workshop",
             required: true,
         },
         start_date: {

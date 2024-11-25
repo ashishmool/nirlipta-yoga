@@ -45,5 +45,5 @@ const physicalCourseSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const PhysicalCourse = mongoose.model("PhysicalCourse", physicalCourseSchema);
-module.exports = PhysicalCourse;
+const Workshop = mongoose.model("Workshop", physicalCourseSchema);
+module.exports = Workshop;

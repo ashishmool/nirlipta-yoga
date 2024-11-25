@@ -29,6 +29,19 @@ import AddAccommodation from "@/pages/dashboard/admin/accommodation/AddAccommoda
 import AddInstructor from "@/pages/dashboard/admin/instructor/AddInstructor.tsx";
 import ListRetreats from "@/pages/dashboard/admin/retreat/ListRetreats.tsx";
 import UpdateRetreat from "@/pages/dashboard/admin/retreat/UpdateRetreat.tsx";
+import ListInstructors from "@/pages/dashboard/admin/instructor/ListInstructors.tsx";
+import UpdateInstructor from "@/pages/dashboard/admin/instructor/UpdateInstructor.tsx";
+import ListAccommodation from "@/pages/dashboard/admin/accommodation/ListAccommodation.tsx";
+import UpdateAccommodation from "@/pages/dashboard/admin/accommodation/UpdateAccommodation.tsx";
+import ListPartners from "@/pages/dashboard/admin/partner/ListPartners.tsx";
+import AddPartner from "@/pages/dashboard/admin/partner/AddPartner.tsx";
+import UpdatePartner from "@/pages/dashboard/admin/partner/UpdatePartner.tsx";
+import ListUsers from "@/pages/dashboard/admin/user/ListUsers.tsx";
+import AddUser from "@/pages/dashboard/admin/user/AddUser.tsx";
+import UpdateUser from "@/pages/dashboard/admin/user/UpdateUser.tsx";
+import ListWorkshops from "@/pages/dashboard/admin/workshop/ListWorkshops.tsx";
+import AddWorkshop from "@/pages/dashboard/admin/workshop/AddWorkshop.tsx";
+import UpdateWorkshop from "@/pages/dashboard/admin/workshop/UpdateWorkshop.tsx";
 
 export default function App() {
     // Active loading screen while fetching data
@@ -105,10 +118,30 @@ export default function App() {
                             <Route path="retreats/update/:id" element={<UpdateRetreat />} />
 
                             {/* Accommodation Routes */}
+                            <Route path="accommodations" element={<ListAccommodation />} />
                             <Route path="accommodations/add" element={<AddAccommodation />} />
+                            <Route path="accommodations/update/:id" element={<UpdateAccommodation />} />
 
-                            {/* InstructorAccommodation Routes */}
+                            {/* Instructor Routes */}
+                            <Route path="instructors" element={<ListInstructors />} />
                             <Route path="instructors/add" element={<AddInstructor />} />
+                            <Route path="instructors/update/:id" element={<UpdateInstructor />} />
+
+                            {/* Partner Routes */}
+                            <Route path="partners" element={<ListPartners />} />
+                            <Route path="partners/add" element={<AddPartner />} />
+                            <Route path="partners/update/:id" element={<UpdatePartner />} />
+
+                            {/* Workshop Routes */}
+                            <Route path="workshops" element={<ListWorkshops />} />
+                            <Route path="workshops/add" element={<AddWorkshop />} />
+                            <Route path="workshops/update/:id" element={<UpdateWorkshop />} />
+
+                            {/* User Routes */}
+                            <Route path="users" element={<ListUsers />} />
+                            <Route path="users/add" element={<AddUser />} />
+                            <Route path="users/update/:id" element={<UpdateUser />} />
+
                         </Route>
                     </Routes>
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for programmatic navigation
-import { FaCirclePlus } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 
 const ListRetreats: React.FC = () => {
     const [retreats, setRetreats] = useState<any[]>([]);
@@ -10,16 +9,15 @@ const ListRetreats: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const navigate = useNavigate(); // useNavigate hook for programmatic navigation
+    const navigate = useNavigate();
 
-    // Fetch retreats on component mount
     useEffect(() => {
         const fetchRetreats = async () => {
             try {
                 const response = await axios.get("http://localhost:5000/api/retreats");
                 setRetreats(response.data || []);
                 setFilteredRetreats(response.data || []);
-                setTotalPages(Math.ceil((response.data.length || 1) / 5)); // Set total pages for pagination
+                setTotalPages(Math.ceil((response.data.length || 1) / 5));
             } catch (error) {
                 console.error("Error fetching retreats:", error);
             }
@@ -28,12 +26,10 @@ const ListRetreats: React.FC = () => {
         fetchRetreats();
     }, []);
 
-    // Search functionality
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const query = e.target.value;
         setSearchQuery(query);
 
-        // Filter retreats based on query in any column
         const filtered = retreats.filter((retreat) =>
             Object.values(retreat)
                 .join(" ")
@@ -41,11 +37,10 @@ const ListRetreats: React.FC = () => {
                 .includes(query.toLowerCase())
         );
         setFilteredRetreats(filtered);
-        setCurrentPage(1); // Reset to first page after search
-        setTotalPages(Math.ceil(filtered.length / 5)); // Update total pages after filter
+        setCurrentPage(1);
+        setTotalPages(Math.ceil(filtered.length / 5));
     };
 
-    // Pagination: calculate the retreats to display based on the current page
     const getPaginatedRetreats = () => {
         const startIndex = (currentPage - 1) * 5;
         const endIndex = startIndex + 5;
@@ -53,16 +48,12 @@ const ListRetreats: React.FC = () => {
     };
 
     const handleDelete = async (id: string) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this retreat?");
-        if (confirmDelete) {
+        if (window.confirm("Are you sure you want to delete this retreat?")) {
             try {
                 await axios.delete(`http://localhost:5000/api/retreats/delete/${id}`);
-                alert("Retreat deleted successfully!");
-                // Re-fetch the retreats after deletion
-                const response = await axios.get("http://localhost:5000/api/retreats");
-                setRetreats(response.data);
-                setFilteredRetreats(response.data);
-                setTotalPages(Math.ceil(response.data.length / 5)); // Update total pages after delete
+                setRetreats((prev) => prev.filter((retreat) => retreat._id !== id));
+                setFilteredRetreats((prev) => prev.filter((retreat) => retreat._id !== id));
+                setTotalPages(Math.ceil(filteredRetreats.length / 5));
             } catch (error) {
                 console.error("Error deleting retreat:", error);
             }
@@ -74,62 +65,70 @@ const ListRetreats: React.FC = () => {
     };
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
+        <div className="max-w-7xl mx-auto p-6">
             <h1 className="text-3xl font-semibold text-center mb-6">Retreats</h1>
 
-            {/* Add Retreat Button */}
-            <div className="mb-4 flex items-center justify-between">
-                <Link to="add"> {/* Use relative path here */}
-                    <button className="flex items-center bg-green-500 text-white p-2 rounded-md">
-                        <FaCirclePlus className="h-5 w-5 mr-2" />
-                        Add Retreat
-                    </button>
+            <div className="flex justify-between mb-4">
+                <Link
+                    to="/admin/retreats/add"
+                    className="inline-flex items-center py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 4v16m8-8H4"
+                        />
+                    </svg>
+                    Add Retreat
                 </Link>
-
-                {/* Search Bar */}
                 <input
                     type="text"
                     placeholder="Search retreats"
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="p-3 w-full max-w-lg border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="p-2 w-full max-w-xs border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
             </div>
 
-            {/* Retreats Table */}
-            <table className="min-w-full table-auto border-collapse border border-gray-300">
+            <table className="min-w-full bg-white border border-gray-300">
                 <thead>
                 <tr>
-                    <th className="px-6 py-3 border-b">Title</th>
-                    <th className="px-6 py-3 border-b">Description</th>
-                    <th className="px-6 py-3 border-b">Start Date</th>
-                    <th className="px-6 py-3 border-b">End Date</th>
-                    <th className="px-6 py-3 border-b">Price</th>
-                    <th className="px-6 py-3 border-b">Max Participants</th>
-                    <th className="px-6 py-3 border-b">Action</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Title</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Description</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Start Date</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">End Date</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Price</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Max Participants</th>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                {getPaginatedRetreats().map((retreat: any) => (
-                    <tr key={retreat._id} className="hover:bg-gray-100">
-                        <td className="px-6 py-4 border-b">{retreat.title}</td>
-                        <td className="px-6 py-4 border-b">{retreat.description}</td>
-                        <td className="px-6 py-4 border-b">{retreat.start_date}</td>
-                        <td className="px-6 py-4 border-b">{retreat.end_date}</td>
-                        <td className="px-6 py-4 border-b">{retreat.price_per_person}</td>
-                        <td className="px-6 py-4 border-b">{retreat.max_participants}</td>
-                        <td className="px-6 py-4 border-b text-center">
-                            {/* Edit Button now navigates to UpdateRetreat */}
-                            <button
-                                onClick={() => navigate(`/admin/retreats/update/${retreat._id}`)} // Add /admin/ here to match your desired URL
-                                className="bg-blue-500 text-white p-2 rounded-md mr-2"
+                {getPaginatedRetreats().map((retreat) => (
+                    <tr key={retreat._id} className="border-b border-gray-200 hover:bg-gray-50">
+                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{retreat.title}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{retreat.description}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{retreat.start_date}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{retreat.end_date}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{retreat.price_per_person}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">{retreat.max_participants}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                            <Link
+                                to={`/admin/retreats/update/${retreat._id}`}
+                                className="text-indigo-600 hover:text-indigo-700 mr-4"
                             >
                                 Edit
-                            </button>
-
+                            </Link>
                             <button
                                 onClick={() => handleDelete(retreat._id)}
-                                className="bg-red-500 text-white p-2 rounded-md"
+                                className="text-red-600 hover:text-red-700"
                             >
                                 Delete
                             </button>
@@ -139,12 +138,11 @@ const ListRetreats: React.FC = () => {
                 </tbody>
             </table>
 
-            {/* Pagination */}
             <div className="mt-6 flex justify-center">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mr-2"
+                    className="py-2 px-4 bg-gray-300 text-gray-700 rounded-md mr-2 disabled:opacity-50"
                 >
                     Prev
                 </button>
@@ -152,7 +150,7 @@ const ListRetreats: React.FC = () => {
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md ml-2"
+                    className="py-2 px-4 bg-gray-300 text-gray-700 rounded-md ml-2 disabled:opacity-50"
                 >
                     Next
                 </button>

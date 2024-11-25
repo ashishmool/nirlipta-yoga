@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const sidelinks = [
+    { title: "Instructors", href: "/admin/instructors" },
+    { title: "Accommodations", href: "/admin/accommodations" },
     { title: "Retreats", href: "/admin/retreats" },
     { title: "Workshops", href: "/admin/workshops" },
     { title: "Partners", href: "/admin/partners" },
@@ -54,9 +56,11 @@ export default function AdminDashboard() {
 
             {/* Main Content */}
             <div style={{ flex: 1, padding: "20px" }}>
-                <header style={{ marginBottom: "20px", borderBottom: "1px solid #ddd", paddingBottom: "10px" }}>
-                    <h1>Admin Dashboard</h1>
-                </header>
+                <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
+                    <header style={{ marginBottom: "20px", borderBottom: "1px solid #ddd", paddingBottom: "10px", cursor: "pointer" }}>
+                        <h1>Admin Dashboard</h1>
+                    </header>
+                </Link>
                 <div>
                     {/* Render nested routes */}
                     <Outlet />

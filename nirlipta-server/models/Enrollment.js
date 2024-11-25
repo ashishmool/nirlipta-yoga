@@ -13,7 +13,7 @@ const enrollmentSchema = new mongoose.Schema(
         },
         course_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
-            ref: "PhysicalCourse", // Reference to the PhysicalCourse collection
+            ref: "Workshop", // Reference to the Workshop collection
         },
         schedule_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
