@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 const sidelinks = [
     { title: "Retreats", href: "/admin/retreats" },
@@ -56,23 +57,9 @@ export default function AdminDashboard() {
                 <header style={{ marginBottom: "20px", borderBottom: "1px solid #ddd", paddingBottom: "10px" }}>
                     <h1>Admin Dashboard</h1>
                 </header>
-                <div style={{ display: "grid", gap: "20px", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
-                    <div style={{ background: "#f1f3f5", padding: "20px", borderRadius: "5px" }}>
-                        <h2>Retreats</h2>
-                        <p>Manage all retreats</p>
-                    </div>
-                    <div style={{ background: "#f1f3f5", padding: "20px", borderRadius: "5px" }}>
-                        <h2>Workshops</h2>
-                        <p>Manage all workshops</p>
-                    </div>
-                    <div style={{ background: "#f1f3f5", padding: "20px", borderRadius: "5px" }}>
-                        <h2>Partners</h2>
-                        <p>Manage all partners</p>
-                    </div>
-                    <div style={{ background: "#f1f3f5", padding: "20px", borderRadius: "5px" }}>
-                        <h2>Users</h2>
-                        <p>Manage all users</p>
-                    </div>
+                <div>
+                    {/* Render nested routes */}
+                    <Outlet />
                 </div>
             </div>
         </div>

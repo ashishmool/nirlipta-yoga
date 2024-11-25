@@ -9,7 +9,10 @@ const instructorSchema = new mongoose.Schema(
         user_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
             ref: "User",
-            required: true,
+            required: false,
+        },
+        name: {
+            type: String,
         },
         bio: {
             type: String,

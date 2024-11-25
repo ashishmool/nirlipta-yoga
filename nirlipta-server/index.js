@@ -2,6 +2,11 @@ const express = require("express");
 const cors = require("cors"); // Import CORS middleware
 const app = express();
 
+// Import multer configuration from config/multerConfig.js
+const upload = require('./config/multerConfig');
+
+
+
 const connectDB = require("./config/db");
 
 // Import routes
@@ -24,6 +29,10 @@ connectDB();
 // Middleware
 app.use(cors()); // Enable CORS for all origins
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+
+
 
 // Use routes
 app.use("/api/accommodations", accommodationRoutes);

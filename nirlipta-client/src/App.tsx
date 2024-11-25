@@ -24,6 +24,9 @@ import {
     BrowseDetails,
 } from "./pages";
 import AdminDashboard from "@/pages/dashboard/admin/AdminDashboard.tsx";
+import AddRetreat from "@/pages/dashboard/admin/retreat/AddRetreat.tsx";
+import AddAccommodation from "@/pages/dashboard/admin/retreat/AddAccommodation.tsx";
+import AddInstructor from "@/pages/dashboard/admin/instructor/AddInstructor.tsx";
 
 export default function App() {
     // Active loading screen while fetching data
@@ -93,10 +96,12 @@ export default function App() {
                         {/*    path="admin"*/}
                         {/*    element={isLoggedin ? <AdminDashboard /> : <Navigate to="/" />}*/}
                         {/*/>*/}
-                        <Route
-                            path="admin"
-                            element={ <AdminDashboard />}
-                        />
+                        <Route path="admin" element={<AdminDashboard />}>
+                            {/*<Route path="retreats" element={<ListRetreats />} />*/}
+                            <Route path="retreats/add" element={<AddRetreat />} />
+                            <Route path="accommodations/add" element={<AddAccommodation />} />
+                            <Route path="instructors/add" element={<AddInstructor />} />
+                        </Route>
                     </Routes>
 
                     {/* Conditionally Render Footer */}
