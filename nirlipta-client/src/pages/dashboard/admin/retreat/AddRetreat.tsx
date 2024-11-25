@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const AddRetreat: React.FC = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -130,6 +134,12 @@ const AddRetreat: React.FC = () => {
             setLoading(false);
         }
     };
+
+    // Go Back to the retreats list page
+    const handleGoBack = () => {
+        navigate("/admin/retreats");
+    };
+
 
     return (
         <div className="max-w-3xl mx-auto p-6">
@@ -330,8 +340,16 @@ const AddRetreat: React.FC = () => {
                     </button>
                 </div>
 
+
                 {/* Submit Button */}
                 <div className="flex justify-center">
+                    <button
+                        type="button"
+                        onClick={handleGoBack}
+                        className="bg-gray-500 text-white p-4 rounded-md"
+                    >
+                        Go Back
+                    </button>
                     <button
                         type="submit"
                         disabled={loading}

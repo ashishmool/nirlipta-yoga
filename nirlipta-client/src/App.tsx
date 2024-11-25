@@ -25,8 +25,10 @@ import {
 } from "./pages";
 import AdminDashboard from "@/pages/dashboard/admin/AdminDashboard.tsx";
 import AddRetreat from "@/pages/dashboard/admin/retreat/AddRetreat.tsx";
-import AddAccommodation from "@/pages/dashboard/admin/retreat/AddAccommodation.tsx";
+import AddAccommodation from "@/pages/dashboard/admin/accommodation/AddAccommodation.tsx";
 import AddInstructor from "@/pages/dashboard/admin/instructor/AddInstructor.tsx";
+import ListRetreats from "@/pages/dashboard/admin/retreat/ListRetreats.tsx";
+import UpdateRetreat from "@/pages/dashboard/admin/retreat/UpdateRetreat.tsx";
 
 export default function App() {
     // Active loading screen while fetching data
@@ -97,9 +99,15 @@ export default function App() {
                         {/*    element={isLoggedin ? <AdminDashboard /> : <Navigate to="/" />}*/}
                         {/*/>*/}
                         <Route path="admin" element={<AdminDashboard />}>
-                            {/*<Route path="retreats" element={<ListRetreats />} />*/}
+                            {/* Retreat Routes */}
+                            <Route path="retreats" element={<ListRetreats />} />
                             <Route path="retreats/add" element={<AddRetreat />} />
+                            <Route path="retreats/update/:id" element={<UpdateRetreat />} />
+
+                            {/* Accommodation Routes */}
                             <Route path="accommodations/add" element={<AddAccommodation />} />
+
+                            {/* InstructorAccommodation Routes */}
                             <Route path="instructors/add" element={<AddInstructor />} />
                         </Route>
                     </Routes>
