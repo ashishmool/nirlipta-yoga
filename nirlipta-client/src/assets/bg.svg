@@ -11,7 +11,9 @@
   <g>
     <g id="Layer_1">
       <g id="Layer_1-2" data-name="Layer_1">
-        <rect class="cls-1" width="1920" height="1280"/>
+        <g id="Layer_1-2">
+          <rect class="cls-1" width="1920" height="1280"/>
+        </g>
       </g>
     </g>
   </g>

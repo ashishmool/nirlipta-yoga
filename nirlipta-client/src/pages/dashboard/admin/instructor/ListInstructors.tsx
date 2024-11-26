@@ -24,7 +24,7 @@ const ListInstructors: React.FC = () => {
     const handleDelete = async (id: string) => {
         if (window.confirm("Are you sure you want to delete this instructor?")) {
             try {
-                await axios.delete(`http://localhost:5000/api/instructors/${id}`);
+                await axios.delete(`http://localhost:5000/api/instructors/delete/${id}`);
                 setInstructors(instructors.filter((instructor: any) => instructor._id !== id));
             } catch (error) {
                 console.error("Error deleting instructor:", error);

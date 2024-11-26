@@ -83,6 +83,7 @@ const ListAccommodation: React.FC = () => {
             <table className="min-w-full bg-white border border-gray-300">
                 <thead>
                 <tr>
+                    <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Image</th>
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Location</th>
                     <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Price</th>
@@ -92,26 +93,35 @@ const ListAccommodation: React.FC = () => {
                 </thead>
                 <tbody>
                 {filteredAccommodations.map((acc) => (
-                    <tr key={acc._id} className="border-b border-gray-200 hover:bg-gray-50">
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{acc.name}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{acc.location}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{acc.price}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{acc.available_rooms}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
-                            <Link
-                                to={`/admin/accommodations/update/${acc._id}`}
-                                className="text-indigo-600 hover:text-indigo-700 mr-4"
-                            >
-                                Edit
-                            </Link>
-                            <button
-                                onClick={() => handleDelete(acc._id)}
-                                className="text-red-600 hover:text-red-700"
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                    <React.Fragment key={acc._id}>
+                        <tr className="border-b border-gray-200 hover:bg-gray-50">
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                <img
+                                    src={`http://localhost:5000${acc.photo}`}  // Adjust the path to match where the images are served
+                                    alt={acc.name}
+                                    className="w-16 h-16 object-cover rounded"  // Thumbnail styling
+                                />
+                            </td>
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900">{acc.name}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">{acc.location}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">{acc.price}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">{acc.available_rooms}</td>
+                            <td className="px-6 py-4 text-sm text-gray-500">
+                                <Link
+                                    to={`/admin/accommodations/update/${acc._id}`}
+                                    className="text-indigo-600 hover:text-indigo-700 mr-4"
+                                >
+                                    Edit
+                                </Link>
+                                <button
+                                    onClick={() => handleDelete(acc._id)}
+                                    className="text-red-600 hover:text-red-700"
+                                >
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </React.Fragment>
                 ))}
                 </tbody>
             </table>

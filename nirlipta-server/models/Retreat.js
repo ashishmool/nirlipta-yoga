@@ -54,12 +54,12 @@ const retreatSchema = new mongoose.Schema(
         accommodation_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
             ref: "Accommodation", // Link to the Accommodation
-            required: false, // Nullable
+            required: false, // Nullable for testing purpose
         },
         instructor_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
             ref: "Instructor",
-            required: false, // Nullable
+            required: false, // Nullable for testing purpose
         },
     },
     { timestamps: true }

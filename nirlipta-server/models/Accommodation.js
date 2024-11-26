@@ -27,7 +27,7 @@ const accommodationSchema = new mongoose.Schema(
             type: [String], // Array of amenities
             default: [],
         },
-        image: {
+        photo: {
             type: String, // URL or file path for accommodation image
             default: null,
         },
