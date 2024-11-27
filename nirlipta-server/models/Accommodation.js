@@ -11,12 +11,16 @@ const accommodationSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        price: {
+        price_per_night: {
             type: Number,
             required: true,
         },
         location: {
             type: String,
+            required: true,
+        },
+        max_occupancy: {
+            type: Number,
             required: true,
         },
         available_rooms: {

@@ -33,7 +33,7 @@ const createAccommodation = async (req, res) => {
     }
 
     try {
-        const { name, description, price_per_night, location, max_occupancy, available_rooms } = req.body;
+        const { name, description, price_per_night, location, max_occupancy, available_rooms, amenities } = req.body;
 
         // Validate that the required fields are provided
         if (!available_rooms || !price_per_night) {
@@ -44,10 +44,11 @@ const createAccommodation = async (req, res) => {
         const newAccommodation = new Accommodation({
             name,
             description,
-            price: price_per_night, // Assuming the price is mapped from price_per_night
+            price_per_night,
             location,
-            available_rooms, // Make sure this field is sent from the client
+            available_rooms,
             max_occupancy,
+            amenities,
             photo: `/uploads/${req.file.filename}`, // Store the relative path to the image
         });
 
@@ -68,15 +69,25 @@ const createAccommodation = async (req, res) => {
 const updateAccommodation = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // If a new photo is uploaded, update the photo field with the new file path
+        if (req.file) {
+            req.body.photo = `/uploads/${req.file.filename}`;  // Assuming you're using Multer and storing relative paths
+        }
+
+        // Update accommodation document
         const updatedAccommodation = await Accommodation.findByIdAndUpdate(id, req.body, { new: true });
+
         if (!updatedAccommodation) {
             return res.status(404).json({ message: "Accommodation not found" });
         }
+
         res.json(updatedAccommodation);
     } catch (error) {
         res.status(500).json({ message: "Error updating accommodation", error });
     }
 };
+
 
 // Partially update accommodation by ID (PATCH)
 const patchAccommodation = async (req, res) => {

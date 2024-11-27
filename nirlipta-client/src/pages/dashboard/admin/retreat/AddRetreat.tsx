@@ -21,6 +21,7 @@ const AddRetreat: React.FC = () => {
         accommodation_id: null, // Accommodation ID
         instructor_id: null, // Instructor ID
         guests: [] as { name: string; photo: File | null }[], // Guest info and their photo
+        retreatPhotos: [] as File[], // Multiple retreat photos
     });
 
     const [loading, setLoading] = useState(false);
@@ -51,6 +52,18 @@ const AddRetreat: React.FC = () => {
         fetchInstructors();
     }, []);
 
+    const handleRetreatPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        setFormData({ ...formData, retreatPhotos: files });
+    };
+
+    const handleGuestImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        const newGuests = [...formData.guests];
+        newGuests[index] = { ...newGuests[index], photo: file };
+        setFormData({ ...formData, guests: newGuests });
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -68,12 +81,6 @@ const AddRetreat: React.FC = () => {
         setFormData({ ...formData, guests: newGuests });
     };
 
-    const handleGuestImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
-        const newGuests = [...formData.guests];
-        const file = e.target.files ? e.target.files[0] : null;
-        newGuests[index] = { ...newGuests[index], photo: file };
-        setFormData({ ...formData, guests: newGuests });
-    };
 
     const addGuest = () => {
         setFormData({ ...formData, guests: [...formData.guests, { name: "", photo: null }] });
@@ -88,52 +95,67 @@ const AddRetreat: React.FC = () => {
         e.preventDefault();
         setLoading(true);
 
-        const formPayload = new FormData();
-        formPayload.append("title", formData.title);
-        formPayload.append("description", formData.description);
-        formPayload.append("start_date", formData.start_date);
-        formPayload.append("end_date", formData.end_date);
-        formPayload.append("price_per_person", formData.price_per_person.toString());
-        formPayload.append("max_participants", formData.max_participants.toString());
-        formPayload.append("address", formData.address);
-        formPayload.append("map_location", formData.map_location);
-
-        formPayload.append("meals_info", JSON.stringify(formData.meals_info.split(",").map((meal) => meal.trim())));
-        formPayload.append("featuring_events", JSON.stringify(formData.featuring_events.split(",").map((event) => event.trim())));
-
-        formPayload.append("organizer", formData.organizer);
-
-        if (formData.accommodation_id) {
-            formPayload.append("accommodation_id", formData.accommodation_id);
-        }
-        if (formData.instructor_id) {
-            formPayload.append("instructor_id", formData.instructor_id);
-        }
-
-        // Append guest names and photos
-        formData.guests.forEach((guest, index) => {
-            formPayload.append(`guest[${index}][name]`, guest.name);
-            if (guest.photo) {
-                formPayload.append(`guest[${index}][photo]`, guest.photo);
-            }
-        });
-
         try {
-            console.log("Form Payload",formPayload);
-            console.log("Form Data",formData);
-            const response = await axios.post("http://localhost:5000/api/retreats/save", formPayload, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+            // Create FormData for sending data to the server
+            const formPayload = new FormData();
+            formPayload.append("title", formData.title);
+            formPayload.append("description", formData.description);
+            formPayload.append("start_date", formData.start_date);
+            formPayload.append("end_date", formData.end_date);
+            formPayload.append("price_per_person", formData.price_per_person.toString());
+            formPayload.append("max_participants", formData.max_participants.toString());
+            formPayload.append("address", formData.address);
+            formPayload.append("map_location", formData.map_location);
+
+            // Convert meals and events into JSON strings
+            formPayload.append("meals_info", JSON.stringify(formData.meals_info.split(",").map((meal) => meal.trim())));
+            formPayload.append("featuring_events", JSON.stringify(formData.featuring_events.split(",").map((event) => event.trim())));
+
+            formPayload.append("organizer", formData.organizer);
+
+            // Optional fields
+            if (formData.accommodation_id) {
+                formPayload.append("accommodation_id", formData.accommodation_id);
+            }
+            if (formData.instructor_id) {
+                formPayload.append("instructor_id", formData.instructor_id);
+            }
+
+            // Add retreat photos
+            formData.retreatPhotos.forEach((photo) => {
+                formPayload.append("photos", photo);
             });
+
+            // Add guest details (names and optional photos)
+            formData.guests.forEach((guest, index) => {
+                formPayload.append(`guests[${index}][name]`, guest.name);
+                if (guest.photo) {
+                    formPayload.append(`guests[${index}][photo]`, guest.photo);
+                }
+            });
+
+            // Send the request to the API
+            const response = await axios.post(
+                "http://localhost:5000/api/retreats/save",
+                formPayload,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
             console.log("Retreat added successfully:", response.data);
+            alert("Retreat added successfully!");
+            navigate("/admin/retreats");
         } catch (error) {
             console.error("Error adding retreat:", error);
-            alert("Failed to add retreat. Please check the server logs for more details.");
+            alert("Failed to add retreat: " + error.message);
         } finally {
             setLoading(false);
         }
     };
+
 
     // Go Back to the retreats list page
     const handleGoBack = () => {
@@ -154,7 +176,7 @@ const AddRetreat: React.FC = () => {
                         type="text"
                         value={formData.title}
                         onChange={handleChange}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
                         required
                     />
                 </div>
@@ -168,12 +190,12 @@ const AddRetreat: React.FC = () => {
                         value={formData.description}
                         onChange={handleChange}
                         rows={4}
-                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
                         required
                     />
                 </div>
 
-                {/* Start Date and End Date in Same Row */}
+                {/* Start and End Dates */}
                 <div className="flex space-x-4">
                     <div className="w-1/2">
                         <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">Start Date</label>
@@ -183,7 +205,7 @@ const AddRetreat: React.FC = () => {
                             type="date"
                             value={formData.start_date}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
                             required
                         />
                     </div>
@@ -195,7 +217,7 @@ const AddRetreat: React.FC = () => {
                             type="date"
                             value={formData.end_date}
                             onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm"
                             required
                         />
                     </div>
@@ -303,59 +325,72 @@ const AddRetreat: React.FC = () => {
                     </select>
                 </div>
 
-                {/* Guests Section */}
+                {/* Retreat Photos */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Guests</label>
+                    <label htmlFor="retreat_photos" className="block text-sm font-medium text-gray-700">Retreat Photos</label>
+                    <input
+                        id="retreat_photos"
+                        name="retreat_photos"
+                        type="file"
+                        onChange={handleRetreatPhotoChange}
+                        multiple
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                </div>
+
+                {/* Guest Details */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700">Guest List</label>
                     {formData.guests.map((guest, index) => (
-                        <div key={index} className="flex items-center space-x-4 mb-4">
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Guest Name"
-                                value={guest.name}
-                                onChange={(e) => handleGuestChange(index, e)}
-                                className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                            <input
-                                type="file"
-                                name="image"
-                                onChange={(e) => handleGuestImageChange(index, e)}
-                                className="mt-1 block p-3 border border-gray-300 rounded-md shadow-sm"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeGuest(index)}
-                                className="bg-red-500 text-white p-2 rounded-md"
-                            >
-                                Remove
-                            </button>
+                        <div key={index} className="space-y-4">
+                            <div className="flex items-center space-x-4">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={guest.name}
+                                    onChange={(e) => handleGuestChange(index, e)}
+                                    placeholder="Guest Name"
+                                    className="mt-1 block w-3/4 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                                <input
+                                    type="file"
+                                    onChange={(e) => handleGuestImageChange(index, e)}
+                                    className="p-3 border border-gray-300 rounded-md shadow-sm"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => removeGuest(index)}
+                                    className="text-red-500"
+                                >
+                                    Remove
+                                </button>
+                            </div>
                         </div>
                     ))}
                     <button
                         type="button"
                         onClick={addGuest}
-                        className="bg-green-500 text-white p-2 rounded-md"
+                        className="mt-2 text-blue-500"
                     >
                         Add Guest
                     </button>
                 </div>
 
-
                 {/* Submit Button */}
-                <div className="flex justify-center">
+                <div className="flex justify-between mt-6">
                     <button
                         type="button"
                         onClick={handleGoBack}
-                        className="bg-gray-500 text-white p-4 rounded-md"
+                        className="text-gray-500 hover:text-gray-700"
                     >
-                        Go Back
+                        Cancel
                     </button>
                     <button
                         type="submit"
+                        className="px-6 py-3 bg-indigo-500 text-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         disabled={loading}
-                        className="bg-blue-500 text-white p-4 rounded-md disabled:bg-gray-400"
                     >
-                        {loading ? "Saving..." : "Save Retreat"}
+                        {loading ? "Adding..." : "Add Retreat"}
                     </button>
                 </div>
             </form>
@@ -364,3 +399,4 @@ const AddRetreat: React.FC = () => {
 };
 
 export default AddRetreat;
+

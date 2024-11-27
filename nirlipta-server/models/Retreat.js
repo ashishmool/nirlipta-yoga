@@ -61,9 +61,14 @@ const retreatSchema = new mongoose.Schema(
             ref: "Instructor",
             required: false, // Nullable for testing purpose
         },
+        photos: {
+            type: [String], // Array of retreat photos (e.g., images of retreat)
+            required: false,
+        },
     },
     { timestamps: true }
 );
+
 
 const Retreat = mongoose.model("Retreat", retreatSchema);
 module.exports = Retreat;

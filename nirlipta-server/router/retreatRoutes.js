@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const upload = require("../config/multerConfig")// Import multer setup
+
 const { getAllRetreats, getRetreatById, createRetreat, updateRetreat, deleteRetreat } = require("../controller/RetreatController");
 
 // Create a new retreat (with image upload)
-router.post("/save", createRetreat);
+router.post("/save", upload, createRetreat);
 
 // Update retreat by ID (with image upload)
-router.put("/update/:id", updateRetreat);
+router.put("/update/:id", upload, updateRetreat);
 
 // Get all retreats
 router.get("/", getAllRetreats);
