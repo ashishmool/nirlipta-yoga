@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
         name: {
             type: String,
             trim: true,
-            default: null, // Optional
+            required: true,
         },
         email: {
             type: String,
@@ -20,12 +20,13 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
+            required: false,
+            default: null,
             minlength: 8,
         },
         profile_picture: {
             type: String, // URL or file path
-            default: null, // Optional
+            default: null,
         },
         role: {
             type: String,
@@ -39,20 +40,20 @@ const userSchema = new mongoose.Schema(
         },
         height: {
             type: Number, // Store height in cm
-            default: null, // Optional
+            default: null,
         },
         weight: {
             type: Number, // Store weight in kg
-            default: null, // Optional
+            default: null,
         },
         gender: {
             type: String,
             enum: ["male", "female", "non-binary", "prefer not to say"],
-            default: null, // Optional
+            default: null,
         },
         medical_conditions: {
             type: [String], // Array of medical conditions
-            required: true, // Mandatory
+            required: true,
         },
         created_at: {
             type: Date,
