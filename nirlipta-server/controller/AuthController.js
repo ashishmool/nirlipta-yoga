@@ -1,38 +1,39 @@
-const bcrypt = require('bcryptjs');
-const jwt= require('jsonwebtoken');
-const SECRET_KEY="8261ba19898d0dcdfe6c0c411df74b587b2e54538f5f451633b71e39f957cf01";
-const Credential=require("../models/Credential")
-const register= async (req, res) => {
-    const { username, password, role } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const cred= new Credential({username,password:hashedPassword,role})
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config(); // Load environment variables
 
-    cred.save();
+const SECRET_KEY = process.env.SECRET_KEY;
+const Credential = require("../models/Credential");
+
+const register = async (req, res) => {
+    const { email, password, role } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const cred = new Credential({ email, password: hashedPassword, role });
+
+    await cred.save();
     res.status(201).send(cred);
 };
 
-
-
 const login = async (req, res) => {
     console.log("Login request received:"); // Login Request
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    const cred = await Credential.findOne({ username });
+    const cred = await Credential.findOne({ email });
     if (!cred || !(await bcrypt.compare(password, cred.password))) {
-        return res.status(403).send('Invalid username or password');
+        return res.status(403).send("Invalid email or password");
     }
 
     const token = jwt.sign(
-        { username: cred.username, role: cred.role },
+        { email: cred.email, role: cred.role },
         SECRET_KEY,
-        { expiresIn: '2h' }
+        { expiresIn: "2h" }
     );
 
     console.log("Token generated.");
     res.json({ token });
 };
 
-module.exports={
+module.exports = {
     login,
-    register
-}
+    register,
+};
