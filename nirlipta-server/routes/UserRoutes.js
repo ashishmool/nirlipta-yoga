@@ -1,11 +1,11 @@
 const { getUsers, getUserById, createUser, updateUser, patchUser, deleteUser } = require("../controller/UserController");
 const express = require("express");
 const userValidation = require("../validation/userValidation");
-const {authorization} = require("../security/auth");
 const router = express.Router();
 
 // Get all users
-router.get("/", authorization, getUsers);
+// router.get("/", authorization, authorizeRole("ADMIN"), getUsers);
+router.get("/", getUsers);
 
 // Create a new user
 router.post("/save", userValidation, createUser);

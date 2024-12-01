@@ -10,18 +10,19 @@ const upload = require('./config/multerConfig');
 const connectDB = require("./config/db");
 
 // Import routes
-const accommodationRoutes = require("./router/accommodationRoutes");
-const userRoutes = require("./router/userRoutes");
-const enrollmentRoutes = require("./router/enrollmentRoutes");
-const instructorRoutes = require("./router/instructorRoutes");
-const lessonRoutes = require("./router/lessonRoutes");
-const onlineCourseRoutes = require("./router/onlineCourseRoutes");
-const paymentRoutes = require("./router/paymentRoutes");
-const workshopRoutes = require("./router/workshopRoutes");
-const retreatRoutes = require("./router/retreatRoutes");
-const scheduleRoutes = require("./router/scheduleRoutes");
-const subscriptionRoutes = require("./router/subscriptionRoutes");
-const partnerRoutes = require("./router/partnerRoutes");
+const accommodationRoutes = require("./routes/AccommodationRoutes");
+const userRoutes = require("./routes/UserRoutes");
+const enrollmentRoutes = require("./routes/EnrollmentRoutes");
+const instructorRoutes = require("./routes/InstructorRoutes");
+const lessonRoutes = require("./routes/LessonRoutes");
+const onlineCourseRoutes = require("./routes/OnlineCourseRoutes");
+const paymentRoutes = require("./routes/PaymentRoutes");
+const workshopRoutes = require("./routes/WorkshopRoutes");
+const retreatRoutes = require("./routes/RetreatRoutes");
+const scheduleRoutes = require("./routes/ScheduleRoutes");
+const subscriptionRoutes = require("./routes/SubscriptionRoutes");
+const partnerRoutes = require("./routes/PartnerRoutes");
+const authRoutes = require("./routes/AuthRoutes");
 
 // Connect to the database
 connectDB();
@@ -47,6 +48,7 @@ app.use("/api/retreats", retreatRoutes);
 app.use("/api/schedules", scheduleRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/partners", partnerRoutes);
+app.use("/api/auth", authRoutes);
 
 
 // Default route (optional)
