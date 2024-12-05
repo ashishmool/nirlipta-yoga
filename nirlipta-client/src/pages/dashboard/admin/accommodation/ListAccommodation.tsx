@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {toast} from "sonner";
 
 const ListAccommodation: React.FC = () => {
     const [accommodations, setAccommodations] = useState<any[]>([]);
@@ -61,6 +62,7 @@ const ListAccommodation: React.FC = () => {
                 setAccommodations((prev) => prev.filter((acc) => acc._id !== id));
                 setFilteredAccommodations((prev) => prev.filter((acc) => acc._id !== id));
                 setTotalPages(Math.ceil(filteredAccommodations.length / ITEMS_PER_PAGE)); // Recalculate total pages
+                toast.success("Delete Success!");
             } catch (error) {
                 console.error("Error deleting accommodation:", error);
             }

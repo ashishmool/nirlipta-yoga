@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -29,3 +29,4 @@ function authorizeRole(role) {
 }
 
 module.exports = { authenticateToken, authorizeRole };
+

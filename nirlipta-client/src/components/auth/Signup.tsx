@@ -1,266 +1,159 @@
 import { useState } from "react";
-import { signup } from "@/backend/services/auth/signup";
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";  // Importing useNavigate for redirection
 
-// UI
+// UI Components
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { toast } from "sonner";
 import Loading from "../ui/loading";
-import { FaArrowLeft } from 'react-icons/fa'; // Importing the left arrow icon
 
-
-
-// STATES
+// States
 import useJoinFormType from "@/lib/states/joinFormType";
-import useSignupData from "@/lib/states/signupData";
 import useErrorAlert from "@/lib/states/errorAlert";
-import checkOnAuthErrors from "@/lib/errors/checkOnAuthErrors";
-import errorsStore from "@/lib/errors/errorsStore";
 
 type FormDataTypes = {
-    "email": string;
-    "password": string;
-    "username": string;
-    "confirmPassword": string;
-}
-
+    email: string;
+    medical_conditions: string;
+};
 
 export default function Signup() {
-
-    // form validation
+    // Validation schema
     const schema = yup.object().shape({
-        email: yup.string().email().required(),
-        password: yup.string().min(8).required(),
-        username: yup.string().required(),
-        confirmPassword: yup.string().oneOf([yup.ref("password")]).required()
-    })
-
-    const { setValue, handleSubmit, formState: { errors } } = useForm<FormDataTypes>({
-        resolver: yupResolver(schema)
+        email: yup.string().email("Invalid email address").required("Email is required"),
+        medical_conditions: yup.string(),
     });
 
-    // States to collect user form data
-    const
-        { email, setEmail } = useSignupData(),
-        { password, setPassword } = useSignupData(),
-        { username, setUsername } = useSignupData(),
-        [confirmPassword, setConfirmPassword] = useState<string>(''),
+    const { handleSubmit, register, formState: { errors }, setValue, reset } = useForm<FormDataTypes>({
+        resolver: yupResolver(schema),
+    });
 
-        // Alerts States if [Successful]
-        { showSignupAlert, setShowSignupAlert } = useErrorAlert(),
+    // State variables
+    const [loading, setLoading] = useState(false);
+    const [noneApplicable, setNoneApplicable] = useState(false);
+    const { setFormType } = useJoinFormType();
+    const { showSignupAlert, setShowSignupAlert } = useErrorAlert();
+    const [formClosed, setFormClosed] = useState(false); // State to control form visibility
+    const navigate = useNavigate(); // useNavigate hook for redirection
 
-        // Set the Form type
-        { setFormType } = useJoinFormType(),
+    // Toggle "Not Applicable" for medical conditions
+    const toggleNoneApplicable = () => {
+        const newValue = !noneApplicable;
+        setNoneApplicable(newValue);
+        setValue("medical_conditions", newValue ? "None" : "");
+    };
 
-        // Show Loading Spinner while Submit
-        [loading, setLoading] = useState<boolean>(false);
-
-
-    // handle inputs changes
-    const
-        handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            setEmail(e.target.value);
-            setValue('email', e.target.value);
-        },
-        handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            setPassword(e.target.value);
-            setValue('password', e.target.value);
-        },
-        handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            setUsername(e.target.value);
-            setValue('username', e.target.value);
-        },
-        handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-            setConfirmPassword(e.target.value);
-            setValue('confirmPassword', e.target.value);
-        }
-
-
-    // Handle data submit
-    async function handleDataSubmit(data: FormDataTypes) {
-        setShowSignupAlert(false)
-        setLoading(true)
+    // Submit handler
+    const handleDataSubmit = async (data: FormDataTypes) => {
+        setLoading(true);
+        setShowSignupAlert(false);
 
         try {
-            const results = await signup({ email: data.email.toLowerCase(), password: data.password, username: data.username });
+            const response = await axios.post("http://localhost:5000/api/auth/register", {
+                email: data.email.toLowerCase(),
+                medical_conditions: data.medical_conditions || "None",
+                role: "student",
+            });
 
-            // Check on Errors store if there's a match to the Error occurred,
-            // if there's any, error type must be send to checkOnAuthError and return with its error description
-            const isTheresError = errorsStore.includes(results)
-            if (isTheresError) {
-                const errorType = errorsStore.find(errorType => errorType === results)
-                toast.error(`${checkOnAuthErrors(errorType).errordescription}`)
-                setLoading(false)
-            } else if (!isTheresError && results) {
-                setLoading(false)
-                setShowSignupAlert(true)
-            } else {
-                setLoading(false)
-                setShowSignupAlert(false)
+            if (response.status === 201) {
+                toast.success("Account created successfully! Please verify email.");
+                setShowSignupAlert(true);
+                setFormClosed(true); // Close the form after success
+
+                // Reset all states after 3 seconds
+                setTimeout(() => {
+                    // Reset the form and state values
+                    reset();
+                    setNoneApplicable(false); // Reset the "Not Applicable" checkbox
+                    setFormClosed(true); // Reopen the form if needed
+
+                    // Redirect to homepage
+                    navigate("/"); // Redirect to the homepage
+                }, 2000); // Delay to show the success message
             }
-
-        } catch (error) {
-            setLoading(false)
-            console.error('An error occurred while Handling data submit (Signup form): ', error)
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
+            toast.error(errorMessage);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
-    // Handle BackToLogin btn
-    function backToLogin() {
-        setFormType('login')
-        setShowSignupAlert(false)
-    }
-
-    // Disable the "Enter" key from submitting a form or doing anything in a form or component
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-        }
+    // Render the form only if it's not closed
+    if (formClosed) {
+        return null; // The form is hidden after successful signup
     }
 
     return (
-        <>
-            <form onSubmit={handleSubmit(handleDataSubmit)} onKeyDown={handleKeyDown}>
-                <div className="mt-6">
-
-                    <div className="absolute top-4 left-4">
-                        <Button
-                            disabled={loading}
-                            className="flex items-center bg-black hover:bg-[#9B6763] shadow-md transition"
-                            onClick={backToLogin}
-                        >
-                            <FaArrowLeft className="mr-2" /> {/* Left Arrow Icon */}
-                            Back to Login
-                        </Button>
-                    </div>
-
-                    {/* Alerts */}
-                    <div className={`${showSignupAlert ? '' : 'hidden'}`}>
-
-                        {/* Successful Msg */}
-                        <div className="bg-green-200 text-green-800 border-green-500 shadow-sm rounded-md p-4">
-                            <h1 className="text-lg font-bold mb-4 capitalize">Dear {username}</h1>
-                            <p className="text-sm text-green-800">
-                                You have successfully registered with us! Your account has been successfully created, and you're now part of a jewellery market where elegance blend seamlessly. To complete your profile and start listing your products, please <span className="font-bold">log in</span> to your account.
-                            </p>
-                        </div>
-
-                        {/* Log in Now btn */}
-                        <Button className='w-full mt-4 shadow-lg' onClick={backToLogin}>
-                            Login
-                        </Button>
-                    </div>
-
-                    <div className={showSignupAlert ? 'hidden' : ''}>
-
-                        {/* Email */}
-                        <div >
-                            <p className="text-gray-500 text-sm mb-4">
-                                <div className="space-y-2">
-                                    <Label className="font-bold text-black text-[15px]">Email Address</Label>
-                                    <p className="text-gray-500 text-sm">
-                                        Please provide your email address to create an account.
-                                    </p>
-                                    <Input
-                                        className={email ? 'text-black' : ''}
-                                        id="email"
-                                        type="email"
-                                        onChange={handleEmailChange}
-                                        placeholder="hello@nirlipta-yoga.com.au"
-                                        required
-                                    />
-                                </div>
-                            </p>
-                        </div>
-
-                        <div className="flex-col space-y-4 justify-between">
-
-                            {/* Username  */}
-                            <div className="space-y-2">
-                                <Label className="font-bold text-black text-[15px]">Username</Label>
-                                <div className="flex justify-between w-full">
-                                    <p className="text-gray-500 text-sm min-w-fit">
-                                        Pick a unique username that represents your identity on our platform.
-                                    </p>
-
-                                </div>
-                                <Input
-                                    className={username ? 'text-black' : ''}
-                                    id="username"
-                                    type="text"
-                                    placeholder="ashish.mool, nivedita_pradhan, divyanjali2014"
-                                    onChange={handleUsernameChange}
-                                    required
-                                />
-                            </div>
-
-                            {/* Password  + confirm password*/}
-                            <div className="md:flex md:flex-row md:space-x-4">
-
-
-                                {/* Password */}
-                                <div className="w-full">
-                                    <Label className="font-bold text-black text-[15px]">Password</Label>
-                                    <Input
-                                        className={`${password ? 'text-black' : ''} mt-3`}
-                                        id="password"
-                                        type="password"
-                                        onChange={handlePasswordChange}
-                                        placeholder="••••••••••"
-                                        required
-                                    />
-
-                                </div>
-
-                                {/* Confirm Password */}
-                                <div className="md:mt-0 mt-3 w-full">
-                                    <Label className="font-bold text-black text-[15px]">Confirm Password</Label>
-                                    <Input
-                                        className={`${confirmPassword ? 'text-black' : ''} mt-3`}
-                                        id="confirmPassword"
-                                        type="password"
-                                        onChange={handleConfirmPasswordChange}
-                                        placeholder="••••••••••"
-                                        required
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Handle confirmPassword message Error */}
-                            {errors.confirmPassword ? (<p className="text-[#9B6763] text-sm">Passwords do not match. Please re-enter matching passwords.</p>) : null}
-
-                            <div className="w-full">
-                                <p className="text-gray-500 text-sm min-w-fit">
-                                Please enter your <span className="text-[#9B6763]">8 characters</span> or more password.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Sign up OR Login */}
-                        <div className="flex items-center mt-6 space-x-3">
-
-                            {/*/!* Go to Login *!/*/}
-                            {/*<Button disabled={loading} className="bg-black hover:bg-[#9B6763] shadow-md transition"*/}
-                            {/*    onClick={backToLogin}>*/}
-                            {/*    Back to Login*/}
-                            {/*</Button>*/}
-
-                            {/* Signup Now */}
-                            <Button
-                                className='w-full bg-[#9B6763] hover:bg-[#B8978C]'
-                                disabled={(username.length > 3) && (email.length > 3) && (password.length > 8) && (confirmPassword.length > 8) ? false : true}>
-                                {loading ? (<Loading w={24} />) : 'Signup Now'}
-                            </Button>
-
-
-                        </div>
-                    </div>
+        <form onSubmit={handleSubmit(handleDataSubmit)} className="mt-6">
+            {/* Success Alert */}
+            {showSignupAlert && (
+                <div className="bg-green-200 text-green-800 border-green-500 shadow-sm rounded-md p-4 mb-6">
+                    <h1 className="text-lg font-bold mb-2 capitalize">Signup Successful!</h1>
+                    <p className="text-sm">
+                        Your account has been created. Please verify your email to log in.
+                    </p>
                 </div>
-            </form>
-        </>
-    )
+            )}
+
+            {/* Email Field */}
+            <div className="space-y-2">
+                <Label htmlFor="email" className="font-bold text-black text-[15px]">
+                    Email Address
+                </Label>
+                <Input
+                    id="email"
+                    type="email"
+                    placeholder="hello@example.com"
+                    {...register("email")}
+                    aria-describedby={errors.email ? "emailError" : undefined}
+                    disabled={loading}
+                />
+                {errors.email && <p id="emailError" className="text-red-500 text-sm">{errors.email.message}</p>}
+            </div>
+
+
+            {/* Medical Conditions Field */}
+            <div className="space-y-2 mt-4">
+                <Label htmlFor="medical_conditions" className="font-bold text-black text-[15px]">
+                    Medical Conditions
+                </Label>
+                <Input
+                    id="medical_conditions"
+                    type="text"
+                    {...register("medical_conditions")}
+                    placeholder="Diabetes, Uric Acid, etc."
+                    disabled={noneApplicable || loading}
+                    aria-describedby={noneApplicable ? "noneApplicableDesc" : "medicalConditionsDesc"}
+                />
+                <div className="flex items-center mt-2">
+                    <input
+                        type="checkbox"
+                        checked={noneApplicable}
+                        onChange={toggleNoneApplicable}
+                        id="noneApplicable"
+                        disabled={loading}
+                    />
+                    <Label htmlFor="noneApplicable" className="ml-2 text-sm">
+                        Not Applicable
+                    </Label>
+                </div>
+
+            </div>
+
+            {/* Signup Button */}
+            <Button
+                type="submit"
+                className="w-full bg-[#9B6763] hover:bg-[#B8978C] mt-6"
+                disabled={loading}
+                aria-label="Signup Button"
+            >
+                {loading ? <Loading w={24} /> : "Signup Now"}
+            </Button>
+        </form>
+    );
 }

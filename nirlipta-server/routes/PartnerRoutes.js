@@ -16,7 +16,7 @@ router.get("/", getPartners);
 router.get("/:id", getPartnerById);
 
 // Create a new partner
-router.post("/create", createPartner);
+router.post("/save", createPartner);
 
 // Update partner by ID (PUT for full update)
 router.put("/update/:id", updatePartner);

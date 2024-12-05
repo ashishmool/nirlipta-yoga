@@ -6,11 +6,6 @@ const userSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId, // Primary Key
             auto: true,
         },
-        name: {
-            type: String,
-            trim: true,
-            required: true,
-        },
         email: {
             type: String,
             required: true,
@@ -27,6 +22,7 @@ const userSchema = new mongoose.Schema(
         profile_picture: {
             type: String, // URL or file path
             default: null,
+            required: false,
         },
         role: {
             type: String,
@@ -34,26 +30,18 @@ const userSchema = new mongoose.Schema(
             default: "student",
         },
         age: {
-            type: Number,
-            min: 0,
-            default: null, // Optional
-        },
-        height: {
-            type: Number, // Store height in cm
-            default: null,
-        },
-        weight: {
-            type: Number, // Store weight in kg
-            default: null,
+            type: Date,
+            default: Date.now,
+            required: false,
         },
         gender: {
             type: String,
-            enum: ["male", "female", "non-binary", "prefer not to say"],
+            enum: ["male", "female", "others", "prefer not to say"],
             default: null,
         },
         medical_conditions: {
             type: [String], // Array of medical conditions
-            required: true,
+            required: false,
         },
         created_at: {
             type: Date,
@@ -92,3 +80,5 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
+
+//Field OTP

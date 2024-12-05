@@ -1,24 +1,32 @@
-// import { account } from "@/backend/configs/config"
-//
-//
-// export async function checkSession() {
-//     const results = await account.getSession('current')
-//     return results ? true : false
-// }
+import axios from "axios";
 
-// checkSession.ts
-
-// Replace this import with a mock session checker
-import mockSession from '@/backend/data/mockSession';
-
-// Mock API call to check session
-export async function checkSession() {
+/**
+ * Checks the user's session by verifying the token stored in localStorage.
+ * Sends a request to the backend to validate the token.
+ *
+ * @returns {Promise<boolean>} Returns true if the session is valid, otherwise false.
+ */
+export async function checkSession(): Promise<boolean> {
     try {
-        // Simulate fetching session from local or static data
-        const results = await mockSession(); // Replace `account.getSession` with mock logic
-        return results ? true : false;
+        // Retrieve the token from localStorage
+        const token = localStorage.getItem("token");
+
+        // If no token exists, session is not valid
+        if (!token) {
+            return false;
+        }
+
+        // Validate the token with the backend
+        const response = await axios.get("http://localhost:5000/api/auth/validate-session", {
+            headers: {
+                Authorization: `Bearer ${token}`, // Pass the token as a Bearer token
+            },
+        });
+
+        // If the response is successful, the session is valid
+        return response.status === 200;
     } catch (error) {
-        console.error("Error checking session:", error);
+        console.error("Error validating session:", error);
         return false;
     }
 }

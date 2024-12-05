@@ -1,13 +1,15 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type UserState = {
-    isLoggedin: boolean | undefined,
-    setIsLoggedin: (state: boolean) => void
-}
+    isLoggedIn: boolean; // Tracks if the user is logged in
+    setIsLoggedIn: (state: boolean) => void; // Function to update the state
+};
 
 const useUserState = create<UserState>((set) => ({
-    isLoggedin: undefined,
-    setIsLoggedin: (state) => set({ isLoggedin: state })
-}))
+    isLoggedIn: false, // Initial state
+    setIsLoggedIn: (state) => set({ isLoggedIn: state }),
+}));
 
 export default useUserState;
+
+

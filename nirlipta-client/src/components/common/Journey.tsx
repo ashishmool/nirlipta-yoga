@@ -5,7 +5,7 @@ import fotoJourney from "../../assets/journey.jpg";
 // import Auth from "../auth/Auth.tsx";
 // import { FaUserPlus } from 'react-icons/fa'; // Importing the Font Awesome icon
 // import Signup from "../auth/Signup";
-import DirectSignup from "@/components/auth/DirectSignup.tsx";
+import Signup from "@/components/auth/Signup.tsx";
 
 
 const cards = [
@@ -57,7 +57,7 @@ const Journey: React.FC = () => {
                     ))}
                 </ul>
                 <ul className="flex flex-wrap justify-center md:justify-start mb-8">
-                    <DirectSignup/>
+                    <Signup/>
                 </ul>
 
 

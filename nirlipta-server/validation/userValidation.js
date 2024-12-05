@@ -1,7 +1,6 @@
 const joi = require("joi")
 
 const userSchema=joi.object({
-    name: joi.string().required(),
     email: joi.string().required(),
     medical_condition: joi.array().items(joi.string().required()).required()
 })

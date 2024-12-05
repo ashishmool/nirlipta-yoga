@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // SVG Background
 import BackgroundSvg from "@/assets/bg.svg";
@@ -42,31 +42,32 @@ import UpdateUser from "@/pages/dashboard/admin/user/UpdateUser.tsx";
 import ListWorkshops from "@/pages/dashboard/admin/workshop/ListWorkshops.tsx";
 import AddWorkshop from "@/pages/dashboard/admin/workshop/AddWorkshop.tsx";
 import UpdateWorkshop from "@/pages/dashboard/admin/workshop/UpdateWorkshop.tsx";
+import Reset from "@/components/reset/Reset.tsx";
+import ResetPassword from "@/components/reset/ResetPassword.tsx";
 
 export default function App() {
     // Active loading screen while fetching data
     const [activeLoadingScreen, setActiveLoadingScreen] = useState<boolean>(true);
 
     // Get the userState that tracks whether the user is logged in or not
-    const { isLoggedin, setIsLoggedin } = useUserState();
+    const { isLoggedIn, setIsLoggedIn } = useUserState();
 
-    // Check if there's an active session by calling the checkSession() and check its return
-    async function sessionCheck() {
-        try {
-            const response = await checkSession();
-            setIsLoggedin(response);
-        } catch (error) {
-            console.error("Error checking session:", error);
-            setIsLoggedin(false);
-        } finally {
-            setActiveLoadingScreen(false);
-        }
-    }
-
-    // Run checks every time the app is mounted
+    // Update the session validation logic
     useEffect(() => {
-        sessionCheck();
-    }, []);
+        const validateSession = async () => {
+            try {
+                const isValidSession = await checkSession(); // Backend session check
+                setIsLoggedIn(isValidSession); // Update login state
+            } catch (error) {
+                console.error("Error validating session:", error);
+                setIsLoggedIn(false); // Default to logged out state on error
+            } finally {
+                setActiveLoadingScreen(false); // Stop showing loading screen
+            }
+        };
+
+        validateSession();
+    }, [setIsLoggedIn]);
 
     // Helper function to check if the current route is admin
     const isAdminRoute = () => window.location.pathname.startsWith("/admin");
@@ -105,12 +106,10 @@ export default function App() {
                         <Route path="policies" element={<Policies />} />
                         <Route path="about" element={<AboutDetails />} />
                         <Route path="collections" element={<BrowseDetails />} />
+                        <Route path="reset" element={<Reset />} />
+                        <Route path="reset-password" element={<ResetPassword />} />
 
                         {/* Admin Dashboard */}
-                        {/*<Route*/}
-                        {/*    path="admin"*/}
-                        {/*    element={isLoggedin ? <AdminDashboard /> : <Navigate to="/" />}*/}
-                        {/*/>*/}
                         <Route path="admin" element={<AdminDashboard />}>
                             {/* Retreat Routes */}
                             <Route path="retreats" element={<ListRetreats />} />
@@ -141,7 +140,6 @@ export default function App() {
                             <Route path="users" element={<ListUsers />} />
                             <Route path="users/add" element={<AddUser />} />
                             <Route path="users/update/:id" element={<UpdateUser />} />
-
                         </Route>
                     </Routes>
 

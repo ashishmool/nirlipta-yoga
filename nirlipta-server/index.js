@@ -5,8 +5,6 @@ const app = express();
 // Import multer configuration from config/multerConfig.js
 const upload = require('./config/multerConfig');
 
-
-
 const connectDB = require("./config/db");
 
 // Import routes
@@ -23,6 +21,7 @@ const scheduleRoutes = require("./routes/ScheduleRoutes");
 const subscriptionRoutes = require("./routes/SubscriptionRoutes");
 const partnerRoutes = require("./routes/PartnerRoutes");
 const authRoutes = require("./routes/AuthRoutes");
+const fileRoutes = require("./routes/FileRoutes");
 
 // Connect to the database
 connectDB();
@@ -31,9 +30,8 @@ connectDB();
 app.use(cors()); // Enable CORS for all origins
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static('uploads'));
 
-
+app.use('/uploads', express.static('uploads')); //Endpoint for Image Location
 
 // Use routes
 app.use("/api/accommodations", accommodationRoutes);
@@ -49,6 +47,7 @@ app.use("/api/schedules", scheduleRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/partners", partnerRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/file", fileRoutes);
 
 
 // Default route (optional)

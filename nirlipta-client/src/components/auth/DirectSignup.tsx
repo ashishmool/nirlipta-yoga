@@ -13,8 +13,7 @@ import Loading from "../ui/loading";
 // Types
 type FormDataTypes = {
     email: string;
-    password: string;
-    confirmPassword: string;
+    name: string;
     medical_conditions?: string;
 };
 
@@ -59,7 +58,7 @@ export default function Signup() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     email: data.email.toLowerCase(),
-                    password: data.password,
+                    name: data.name,
                     medical_conditions: noneApplicable ? "None" : data.medical_conditions,
                 }),
             });
@@ -82,6 +81,19 @@ export default function Signup() {
     return (
         <form onSubmit={handleSubmit(handleSignup)}>
             <div className="mt-6">
+
+                {/* Name */}
+                <div className="space-y-2">
+                    <Label>Name</Label>
+                    <Input
+                        type="name"
+                        {...register("name")}
+                        placeholder="Ashish Mool"
+                        disabled={loading}
+                    />
+                    {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                </div>
+
                 {/* Email */}
                 <div className="space-y-2">
                     <Label>Email Address</Label>
@@ -94,31 +106,6 @@ export default function Signup() {
                     {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                 </div>
 
-                {/* Password and Confirm Password */}
-                <div className="mt-4 flex flex-col md:flex-row md:space-x-4">
-                    <div className="w-full">
-                        <Label>Password</Label>
-                        <Input
-                            type="password"
-                            {...register("password")}
-                            placeholder="••••••••"
-                            disabled={loading}
-                        />
-                        {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
-                    </div>
-                    <div className="w-full mt-4 md:mt-0">
-                        <Label>Confirm Password</Label>
-                        <Input
-                            type="password"
-                            {...register("confirmPassword")}
-                            placeholder="••••••••"
-                            disabled={loading}
-                        />
-                        {errors.confirmPassword && (
-                            <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>
-                        )}
-                    </div>
-                </div>
 
                 {/* Medical Conditions */}
                 <div className="space-y-2 mt-4">
