@@ -6,7 +6,7 @@ import Partners from "@/components/common/Partners.tsx";
 export default function Home() {
 
     return (
-        <div className="md:container container-fluid mt-4">
+        <div className="md:container container-fluid mt-16">
             <Journey/>
             <Workshops/>
             <Retreats/>

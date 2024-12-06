@@ -44,6 +44,7 @@ import AddWorkshop from "@/pages/dashboard/admin/workshop/AddWorkshop.tsx";
 import UpdateWorkshop from "@/pages/dashboard/admin/workshop/UpdateWorkshop.tsx";
 import Reset from "@/components/reset/Reset.tsx";
 import ResetPassword from "@/components/reset/ResetPassword.tsx";
+import MainNav from "@/components/common/MainNav.tsx";
 
 export default function App() {
     // Active loading screen while fetching data
@@ -94,8 +95,8 @@ export default function App() {
                     {/* Conditionally Render Navbar */}
                     {!isAdminRoute() && (
                         <div>
-                            <Navbar />
-                            <div className="pb-10"></div>
+                            {/*<Navbar />*/}
+                            <MainNav/>
                         </div>
                     )}
 

@@ -62,6 +62,7 @@ export default function Signup({
             if (response.status === 201) {
                 toast.success("Account created successfully! Please verify email.");
                 reset();
+                toggleNoneApplicable();
                 navigate("/"); // Redirect to homepage
             }
         } catch (error: any) {

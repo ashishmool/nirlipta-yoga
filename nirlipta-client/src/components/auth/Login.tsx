@@ -56,7 +56,9 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                 toast.success("Login successful!");
                 setIsLoggedIn(true);
                 onClose(); // Close modal on success
-                navigate("/dashboard");
+
+                // Force a full reload of the page
+                window.location.reload();
             } else {
                 throw new Error("Token not found in response");
             }
@@ -68,6 +70,13 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
             setLoading(false);
         }
     };
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if (event.key === "Enter") {
+            handleLogin(); // Trigger login when Enter is pressed
+        }
+    };
+
 
     return (
         <Dialog open={true} onOpenChange={onClose}>
@@ -84,7 +93,7 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                 </DialogHeader>
 
                 {isResetPassword ? (
-                    <ResetRequest onClose={onClose} /> // Passing onClose here
+                    <ResetRequest onClose={onClose} />
                 ) : isLogin ? (
                     <div className="mt-4">
                         <div className="space-y-2">
@@ -98,6 +107,7 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
+                                onKeyDown={handleKeyDown} // Add onKeyDown event to trigger login
                             />
                         </div>
 
@@ -112,6 +122,7 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                onKeyDown={handleKeyDown} // Add onKeyDown event to trigger login
                             />
                         </div>
 
@@ -121,8 +132,8 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                                 className="text-blue-900 hover:underline cursor-pointer"
                                 onClick={() => setIsResetPassword(true)}
                             >
-                                Reset it
-                            </span>
+                            Reset it
+                        </span>
                         </p>
 
                         <Button
@@ -139,8 +150,8 @@ export default function LoginRegisterModal({ onClose }: LoginRegisterModalProps)
                                 className="text-blue-900 hover:underline cursor-pointer"
                                 onClick={() => setIsLogin(false)}
                             >
-                                Register
-                            </span>
+                            Register
+                        </span>
                         </p>
                     </div>
                 ) : (
