@@ -1,12 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import fotoJourney from "../../assets/journey.jpg";
-// import {Dialog, DialogContent, DialogTrigger} from "@/components/ui/dialog.tsx";
-// import {Button} from "@/components/ui/button.tsx";
-// import Auth from "../auth/Auth.tsx";
-// import { FaUserPlus } from 'react-icons/fa'; // Importing the Font Awesome icon
-// import Signup from "../auth/Signup";
 import Signup from "@/components/auth/Signup.tsx";
-
+import Login from "@/components/auth/Login.tsx"; // Assuming you have a Login component
 
 const cards = [
     {
@@ -30,14 +25,22 @@ const cards = [
 ];
 
 const Journey: React.FC = () => {
-    return (
+    const [isLogin, setIsLogin] = useState(false); // State to toggle between Login and Signup
 
+    const handleSwitchToLogin = () => {
+        setIsLogin(true); // Switch to login
+    };
+
+    const handleSwitchToSignup = () => {
+        setIsLogin(false); // Switch to signup
+    };
+
+    return (
         <section className="flex flex-col md:flex-row items-center justify-between mx-auto max-w-5xl px-4 py-20">
             {/* Text Section */}
             <div className="max-w-lg text-center md:text-left">
                 <h1 className="text-4xl font-light mb-4 relative">
                     Start Your Yoga Journey
-                    {/*<span className="absolute -bottom-6 -left-6 w-20 h-20 bg-[#B8978C] blur-xl rounded-full -z-10"></span>*/}
                 </h1>
                 <p className="mb-6 text-gray-700">
                     Whether you're a beginner or experienced, we offer personalized
@@ -56,20 +59,24 @@ const Journey: React.FC = () => {
                         </li>
                     ))}
                 </ul>
-                <ul className="flex flex-wrap justify-center md:justify-start mb-8">
-                    <Signup/>
-                </ul>
 
-
-
-
+                {/* Adjusted Signup Form Container */}
+                <div className="flex justify-center md:justify-start mb-8 w-full">
+                    <div className="w-full max-w-md"> {/* Ensure it takes full width on smaller screens */}
+                        {/* Conditionally render Login or Signup */}
+                        {isLogin ? (
+                            <Login onClose={() => setIsLogin(false)} /> // Assuming you have an onClose prop in Login
+                        ) : (
+                            <Signup onSwitchToLogin={handleSwitchToLogin} />
+                        )}
+                    </div>
+                </div>
             </div>
 
             {/* Image Section */}
             <div className="relative w-full max-w-md mt-10 md:mt-0">
                 <div className="absolute -top-6 left-0 text-xs opacity-70">
                     <span className="block"><strong>Photo: Nivedita Pradhan | </strong>20.10.2024</span>
-
                 </div>
                 <div className="relative">
                     <div className="absolute top-16 -left-2 w-12 h-40 bg-gray-300 rounded-tr-[4rem]"></div>
@@ -80,13 +87,7 @@ const Journey: React.FC = () => {
                         className="relative z-10 w-full h-auto rounded-tr-[4rem] object-cover"
                     />
                 </div>
-
             </div>
-
-
-
-
-
         </section>
     );
 };

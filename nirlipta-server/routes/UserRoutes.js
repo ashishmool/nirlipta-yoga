@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Get all users
 // router.get("/", authorization, authorizeRole("ADMIN"), getUsers);
-router.get("/", getUsers);
+router.get("/", userValidation, getUsers);
 
 // Create a new user
 router.post("/save", userValidation, createUser);

@@ -1,10 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-
-// Components
-import Auth from '@/components/auth/Auth';
-import Loading from '../ui/loading';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -18,27 +13,29 @@ import {
     NavigationMenu,
     NavigationMenuContent,
     NavigationMenuItem,
+    NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-// ICONS
-import { CiSearch } from "react-icons/ci";
-import { FcAbout } from "react-icons/fc";
-import { CgLogOut } from "react-icons/cg";
-
-// SESSION CHECK FUNCTION
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import Loading from "@/components/ui/loading";
+import Auth from "@/components/auth/Auth";
 import { checkSession } from "../../backend/services/auth/checkSession";
 
-export default function Navbar() {
-    const [isLoggedin, setIsLoggedin] = useState(false); // Login state
-    const [logoutSpinner, setLogoutSpinner] = useState(false);
-    const [userMetaData, setUserMetaData] = useState({ name: "User" }); // Replace with actual user data
-    const [userExtraMetaDetails, setUserExtraMetaDetails] = useState({ avatar: "/path/to/avatar" }); // Replace with actual user avatar
-    const [isScrolled, setIsScrolled] = useState(false); // For scroll detection
-    const [isVerified, setIsVerified] = useState(true); // Assuming the user is verified for now
+// ICONS
+import { CgLogOut } from "react-icons/cg";
+import { FaBars, FaTimes } from "react-icons/fa";
+import Login from "@/components/auth/Login.tsx";
 
-    // Check session on component mount
+export default function Navbar() {
+    const [isLoggedin, setIsLoggedin] = useState(false);
+    const [logoutSpinner, setLogoutSpinner] = useState(false);
+    const [userMetaData, setUserMetaData] = useState({ name: localStorage.getItem("email") });
+    const [userExtraMetaDetails, setUserExtraMetaDetails] = useState({ avatar: "/path/to/avatar" });
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isVerified, setIsVerified] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false); // Manage dialog visibility state
+
     useEffect(() => {
         async function validateSession() {
             const isValid = await checkSession();
@@ -47,146 +44,163 @@ export default function Navbar() {
         validateSession();
     }, []);
 
-    // Handle scroll behavior for navbar
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50); // Set to true when scrolled down 50px or more
+            setIsScrolled(window.scrollY > 50);
         };
-
-        window.addEventListener('scroll', handleScroll);
-
-        // Cleanup on unmount
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Handle logout functionality
     const handleLogout = () => {
-        setLogoutSpinner(true); // Show the loading spinner
-        localStorage.removeItem("token"); // Clear token
-        setIsLoggedin(false); // Update login state
-        setLogoutSpinner(false); // Hide the loading spinner
+        setLogoutSpinner(true);
+        localStorage.removeItem("token");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("email");
+        localStorage.removeItem("role");
+        setIsLoggedin(false);
+        setLogoutSpinner(false);
     };
 
-    // Handle scroll to top behavior
     const scrollTopFunc = () => window.scrollTo(0, 0);
 
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen((prev) => !prev);
+        document.body.classList.toggle("overflow-hidden", !isMobileMenuOpen);
+    };
+
     return (
-        <div className="md:container container-fluid fixed min-w-full z-50">
-            {/* Verify Alert */}
-            {isLoggedin === true && !userMetaData.emailVerification ? (
+        <div className="fixed min-w-full z-50">
+            {/* Verification Dialog */}
+            {isLoggedin && !userMetaData.emailVerification && (
                 <Dialog open={isVerified}>
                     <DialogContent>
                         <div className="w-full text-center">
-                            <img
-                                src="/images/verify.png"
-                                alt="Verification"
-                                className="w-[300px] mx-auto my-4"
-                            />
+                            <img src="/images/verify.png" alt="Verification" className="w-[300px] mx-auto my-4" />
                             <p>
-                                Your profile is not complete yet. Please verify your account in the{" "}
+                                Your profile is incomplete. Complete it in the{" "}
                                 <span className="text-black">settings</span> to access all features.
                             </p>
                         </div>
                         <div className="flex justify-between space-x-3">
-                            <Button onClick={() => setIsVerified(false)}>Remember me later</Button>
-                            <Link to="/verify">
-                                <Button onClick={() => setIsVerified(false)} className="min-w-full">
-                                    Verify Now
+                            <Button onClick={() => setIsVerified(false)}>Remind Me Later</Button>
+                            <Link to="/user-profile">
+                                <Button className="min-w-full" onClick={() => setIsVerified(false)}>
+                                    Complete Profile
                                 </Button>
                             </Link>
                         </div>
                     </DialogContent>
                 </Dialog>
-            ) : null}
+            )}
 
             {/* Navbar */}
             <nav
                 className={`${
-                    isScrolled ? "bg-white shadow-lg backdrop-blur-sm" : "bg-transparent"
+                    isScrolled ? "bg-white shadow-lg" : "bg-transparent"
                 } fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300`}
             >
-                <div className="max-w-screen-xl flex flex-row justify-between mx-auto px-4 py-3">
-                    {/* Logo + Main section */}
-                    <div className="flex items-center">
-                        <Link onClick={scrollTopFunc} to="/" className="mr-3">
-                            <img
-                                src="/images/logo-main.svg"
-                                className="w-24 h-auto"
-                                alt="Nirlipta Yoga"
-                            />
-                        </Link>
+                <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
+                    {/* Logo */}
+                    <Link onClick={scrollTopFunc} to="/" className="mr-3">
+                        <img src="/images/logo-main.svg" className="w-24 h-auto" alt="Nirlipta Yoga" />
+                    </Link>
 
-                        {/* Main sections */}
-                        <div className='hidden lg:block'>
-                            <NavigationMenu>
+                    {/* Hamburger Icon */}
+                    <button
+                        className="lg:hidden text-gray-700 focus:outline-none"
+                        onClick={toggleMobileMenu}
+                    >
+                        {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                    </button>
+
+                    {/* Main Navigation */}
+                    <div className={`lg:flex lg:items-center ${isMobileMenuOpen ? "block" : "hidden"}`}>
+                        <NavigationMenu>
+                            <NavigationMenuList>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className='bg-transparent text-sm font-medium hover:text-blue-500'>
-                                        Explore
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent>
+                                    <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
+                                    <NavigationMenuContent
+                                        className={`${
+                                            isScrolled ? "bg-white shadow" : "bg-transparent"
+                                        }`}
+                                    >
                                         <ul className="grid gap-2 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                            <Link onClick={scrollTopFunc} to="/collections/poses">
-                                                <li className="hover:bg-gray-100 p-3 rounded-md">
-                                                    <span className="text-sm font-semibold">Yoga Poses</span>
-                                                    <p className="text-sm text-muted-foreground min-w-full">Explore various poses for flexibility, strength, and balance.</p>
-                                                </li>
-                                            </Link>
-                                            {/* Add more sections like this */}
+                                            {[{ path: "/workshops", label: "Workshops" }, { path: "/retreats", label: "Retreats" }, { path: "/partners", label: "Partners" }, { path: "/supporters", label: "Supporters" }]
+                                                .map((item, index) => (
+                                                    <Link key={index} onClick={scrollTopFunc} to={item.path}>
+                                                        <li className="hover:bg-gray-100 p-3 rounded-md">
+                                                            <span className="text-sm font-semibold">{item.label}</span>
+                                                            <p className="text-sm text-muted-foreground">
+                                                                Discover more about {item.label.toLowerCase()}.
+                                                            </p>
+                                                        </li>
+                                                    </Link>
+                                                ))}
                                         </ul>
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
-                            </NavigationMenu>
-                        </div>
-                    </div>
+                            </NavigationMenuList>
+                        </NavigationMenu>
 
-                    {/* Right section - Login/Logout */}
-                    <div className="flex items-center space-x-4">
-                        {isLoggedin ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button variant="outline">
-                                        <div className="hidden sm:block">
-                                            <span className={`${logoutSpinner ? "hidden" : ""} capitalize px-3`}>
-                                                {userMetaData.name}
-                                            </span>
-                                            <div className={`${logoutSpinner ? "" : "hidden"} px-5`}>
-                                                <Loading w={24} />
+                        {/* Login/Dropdown */}
+                        <div className="mt-4 lg:mt-0 lg:ml-4">
+                            {isLoggedin ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline">
+                                            <div className="hidden sm:block">
+                                                <span className={`${logoutSpinner ? "hidden" : ""} capitalize px-3`}>
+                                                    {userMetaData.name}
+                                                </span>
+                                                {logoutSpinner && (
+                                                    <div className="px-5">
+                                                        <Loading w={24} />
+                                                    </div>
+                                                )}
                                             </div>
-                                        </div>
-                                        <div className="block sm:hidden">
-                                            <img src={userExtraMetaDetails.avatar} className="h-[35px] w-[35px] rounded-md" />
-                                        </div>
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-50">
-                                    <div className="userLoggedin">
+                                            <div className="block sm:hidden">
+                                                <img
+                                                    src={userExtraMetaDetails.avatar}
+                                                    className="h-[35px] w-[35px] rounded-md"
+                                                    alt="User Avatar"
+                                                />
+                                            </div>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-50">
                                         <DropdownMenuLabel>Activities</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                        <DropdownMenuLabel>Dashboard</DropdownMenuLabel>
                                         <DropdownMenuSeparator />
-                                        <DropdownMenuItem className="text-red-500 cursor-pointer" onClick={handleLogout}>
+                                        <DropdownMenuItem
+                                            className="text-red-500 cursor-pointer"
+                                            onClick={handleLogout}
+                                        >
+                                            <CgLogOut className="mr-2" />
                                             Sign Out
                                         </DropdownMenuItem>
-                                    </div>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : (
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button
-                                        className="font-semibold bg-[#9B6763] hover:bg-[#A38F85] text-white px-4 py-2 rounded-md transition duration-200 ease-in-out"
-                                    >
-                                        Login
-                                    </Button>
-
-                                </DialogTrigger>
-                                <DialogContent>
-                                    <Auth />
-                                </DialogContent>
-                            </Dialog>
-                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : (
+                                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                                    <DialogTrigger asChild>
+                                        <Button>Login</Button>
+                                    </DialogTrigger>
+                                    <DialogContent aria-describedby="login-dialog-description"> {/* Added aria-describedby */}
+                                        <DialogHeader>
+                                            <DialogTitle>Login</DialogTitle>
+                                        </DialogHeader>
+                                        {/* Added description for accessibility */}
+                                        <p id="login-dialog-description" className="sr-only">
+                                            Please enter your credentials to log in.
+                                        </p>
+                                        {/* Pass the onClose prop to the Login component */}
+                                        <Login onClose={() => setIsDialogOpen(false)} />
+                                    </DialogContent>
+                                </Dialog>
+                            )}
+                        </div>
                     </div>
                 </div>
             </nav>

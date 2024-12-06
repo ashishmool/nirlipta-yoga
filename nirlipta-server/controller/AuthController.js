@@ -57,17 +57,26 @@ const login = async (req, res) => {
             return res.status(403).send({ message: "Invalid email or password" });
         }
 
+        // Create JWT with user details
         const token = jwt.sign(
-            { user_id: user.user_id, email: user.email, role: user.role },
+            { user_id: user._id, email: user.email, role: user.role },
             SECRET_KEY,
-            { expiresIn: "2h" }
+            { expiresIn: "6h" }
         );
 
-        res.json({ token, message: "Login successful" });
+        // Send response with all necessary data
+        res.json({
+            token,
+            user_id: user._id,
+            email: user.email,
+            role: user.role,
+            message: "Login successful",
+        });
     } catch (error) {
         res.status(500).send({ message: "Login failed", error });
     }
 };
+
 
 // Request Password Reset - Generate a Reset Token and send via email
 const resetPasswordRequest = async (req, res) => {

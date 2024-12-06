@@ -109,6 +109,13 @@ export default function App() {
                         <Route path="reset" element={<Reset />} />
                         <Route path="reset-password" element={<ResetPassword />} />
 
+                        {/* User Dashboard */}
+                        <Route path="user-profile" element={<UpdateUser />}>
+                            {/* Retreat Routes */}
+                            {/*<Route path="retreats" element={<ListRetreats />} />*/}
+
+                        </Route>
+
                         {/* Admin Dashboard */}
                         <Route path="admin" element={<AdminDashboard />}>
                             {/* Retreat Routes */}
