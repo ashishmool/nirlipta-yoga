@@ -1,12 +1,13 @@
 const Workshop = require("../models/Workshop");
-const Category = require("../models/WorkshopCategory"); // Assuming you have a category model
+const Category = require("../models/WorkshopCategory");
 const Instructor = require("../models/Instructor");
-const upload = require("../config/multerConfig"); // Import the multer configuration
 
 // Get all workshops
 const getAllWorkshops = async (req, res) => {
     try {
-        const workshops = await Workshop.find().populate("instructor_id").populate("category");
+        const workshops = await Workshop.find()
+            .populate("instructor_id")
+            .populate("category");
         res.json(workshops);
     } catch (error) {
         res.status(500).json({ message: "Error fetching workshops", error });
@@ -17,7 +18,9 @@ const getAllWorkshops = async (req, res) => {
 const getWorkshopById = async (req, res) => {
     try {
         const { id } = req.params;
-        const workshop = await Workshop.findById(id).populate("instructor_id").populate("category");
+        const workshop = await Workshop.findById(id)
+            .populate("instructor_id")
+            .populate("category");
         if (!workshop) {
             return res.status(404).json({ message: "Workshop not found" });
         }
@@ -29,7 +32,6 @@ const getWorkshopById = async (req, res) => {
 
 // Create a new workshop
 const createWorkshop = async (req, res) => {
-    // Check if the file is uploaded
     if (!req.file) {
         return res.status(400).json({ message: "Photo is required" });
     }
@@ -46,27 +48,43 @@ const createWorkshop = async (req, res) => {
             instructor_id,
             category,
             newCategory,
+            modules, // Expecting an array of module objects
         } = req.body;
 
-        // Validate that the required fields are provided
-        if (!title || !description || !price || !classroom_info || !instructor_id || !category) {
-            return res.status(400).json({ message: "All fields are required" });
+        // Parse `modules` if sent as JSON
+        let parsedModules = [];
+        if (typeof modules === "string") {
+            parsedModules = JSON.parse(modules);
+        } else if (Array.isArray(modules)) {
+            parsedModules = modules;
         }
 
-        // If the "Create New Category" option is selected, create a new category
+        // Validate modules
+        if (!parsedModules || parsedModules.length === 0) {
+            return res.status(400).json({ message: "Modules are required." });
+        }
+
+        for (const module of parsedModules) {
+            if (!module.name || !module.duration) {
+                return res
+                    .status(400)
+                    .json({ message: "Each module must have a name and duration." });
+            }
+        }
+
+        // Handle category creation if needed
         let selectedCategory = category;
         if (category === "create-new" && newCategory) {
             const existingCategory = await Category.findOne({ name: newCategory });
             if (existingCategory) {
                 return res.status(400).json({ message: "Category already exists" });
             }
-            // Create the new category and use its ID
             const newCategoryDoc = new Category({ name: newCategory });
             await newCategoryDoc.save();
             selectedCategory = newCategoryDoc._id;
         }
 
-        // Create a new workshop document
+        // Create new workshop
         const newWorkshop = new Workshop({
             title,
             description,
@@ -77,10 +95,10 @@ const createWorkshop = async (req, res) => {
             map_location,
             instructor_id,
             category: selectedCategory,
-            photo: `/uploads/${req.file.filename}`, // Store the relative path to the image
+            modules: parsedModules,
+            photo: `/uploads/${req.file.filename}`,
         });
 
-        // Save to the database
         const savedWorkshop = await newWorkshop.save();
         res.status(201).json(savedWorkshop);
     } catch (error) {
@@ -93,14 +111,35 @@ const createWorkshop = async (req, res) => {
 const updateWorkshop = async (req, res) => {
     try {
         const { id } = req.params;
-        let { category, newCategory } = req.body;
+        let { category, newCategory, modules } = req.body;
 
-        // If a new photo is uploaded, update the photo field with the new file path
-        if (req.file) {
-            req.body.photo = `/uploads/${req.file.filename}`; // Assuming you're using Multer and storing relative paths
+        // Parse `modules` if sent as JSON
+        let parsedModules = [];
+        if (modules) {
+            if (typeof modules === "string") {
+                parsedModules = JSON.parse(modules);
+            } else if (Array.isArray(modules)) {
+                parsedModules = modules;
+            }
+
+            // Validate modules
+            for (const module of parsedModules) {
+                if (!module.name || !module.duration) {
+                    return res
+                        .status(400)
+                        .json({ message: "Each module must have a name and duration." });
+                }
+            }
+
+            req.body.modules = parsedModules;
         }
 
-        // If a new category is provided, handle the new category creation
+        // Handle photo upload
+        if (req.file) {
+            req.body.photo = `/uploads/${req.file.filename}`;
+        }
+
+        // Handle category creation if needed
         if (category === "create-new" && newCategory) {
             const existingCategory = await Category.findOne({ name: newCategory });
             if (existingCategory) {
@@ -108,11 +147,13 @@ const updateWorkshop = async (req, res) => {
             }
             const newCategoryDoc = new Category({ name: newCategory });
             await newCategoryDoc.save();
-            req.body.category = newCategoryDoc._id; // Use the newly created category
+            req.body.category = newCategoryDoc._id;
         }
 
-        // Update workshop document
-        const updatedWorkshop = await Workshop.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+        const updatedWorkshop = await Workshop.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true,
+        });
 
         if (!updatedWorkshop) {
             return res.status(404).json({ message: "Workshop not found" });

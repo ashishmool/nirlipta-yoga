@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "sonner"; // for notifications
 
 const UpdateInstructor: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -16,6 +17,7 @@ const UpdateInstructor: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
 
+    // Fetch instructor data on component mount
     useEffect(() => {
         const fetchInstructor = async () => {
             try {
@@ -30,6 +32,7 @@ const UpdateInstructor: React.FC = () => {
                 });
             } catch (error) {
                 console.error("Error fetching instructor:", error);
+                toast.error("Failed to fetch instructor data.");
             }
         };
 
@@ -52,53 +55,107 @@ const UpdateInstructor: React.FC = () => {
 
         try {
             await axios.put(`http://localhost:5000/api/instructors/update/${id}`, payload);
-            alert("Instructor updated successfully!");
+            toast.success("Instructor updated successfully!");
             navigate("/admin/instructors");
         } catch (error) {
             console.error("Error updating instructor:", error);
-            alert("Failed to update instructor.");
+            toast.error("Failed to update instructor.");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="max-w-3xl mx-auto p-6 bg-white rounded-md shadow">
-            <h1 className="text-3xl font-semibold text-center mb-6">Update Instructor</h1>
+        <div className="max-w-3xl mx-auto p-6">
+            <div className="flex justify-between items-center mb-6">
+                <button
+                    onClick={() => navigate(-1)}
+                    className="text-indigo-600 hover:text-indigo-700"
+                >
+                    &#8592; Back
+                </button>
+                <h1 className="text-3xl font-semibold">Update Instructor</h1>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-6">
-                {/** Form Fields */}
-                {["name", "bio", "specialization", "rating", "availability"].map((field) => (
-                    <div key={field}>
-                        <label
-                            htmlFor={field}
-                            className="block text-sm font-medium text-gray-700 capitalize"
-                        >
-                            {field === "specialization"
-                                ? "Specialization (comma-separated)"
-                                : field === "rating"
-                                    ? "Rating (0-5)"
-                                    : field}
-                        </label>
+                {/* Name, Specialization, Rating (Same Row) */}
+                <div className="grid grid-cols-3 gap-4">
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
                         <input
-                            id={field}
-                            name={field}
-                            type={field === "rating" ? "number" : "text"}
-                            value={formData[field]}
+                            id="name"
+                            name="name"
+                            type="text"
+                            value={formData.name}
                             onChange={handleChange}
                             className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             required
                         />
                     </div>
-                ))}
+                    <div>
+                        <label htmlFor="specialization" className="block text-sm font-medium text-gray-700">Specialization (comma-separated)</label>
+                        <input
+                            id="specialization"
+                            name="specialization"
+                            type="text"
+                            value={formData.specialization}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="rating" className="block text-sm font-medium text-gray-700">Rating (0-5)</label>
+                        <input
+                            id="rating"
+                            name="rating"
+                            type="number"
+                            value={formData.rating}
+                            onChange={handleChange}
+                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            min="0"
+                            max="5"
+                            required
+                        />
+                    </div>
+                </div>
 
-                {/** Submit Button */}
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-3 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                    {loading ? "Updating..." : "Update Instructor"}
-                </button>
+                {/* Bio */}
+                <div>
+                    <label htmlFor="bio" className="block text-sm font-medium text-gray-700">Bio</label>
+                    <textarea
+                        id="bio"
+                        name="bio"
+                        value={formData.bio}
+                        onChange={handleChange}
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        required
+                    />
+                </div>
+
+                {/* Availability */}
+                <div>
+                    <label htmlFor="availability" className="block text-sm font-medium text-gray-700">Availability</label>
+                    <input
+                        id="availability"
+                        name="availability"
+                        type="text"
+                        value={formData.availability}
+                        onChange={handleChange}
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        required
+                    />
+                </div>
+
+                {/* Submit Button */}
+                <div>
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-3 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        {loading ? "Updating..." : "Update Instructor"}
+                    </button>
+                </div>
             </form>
         </div>
     );

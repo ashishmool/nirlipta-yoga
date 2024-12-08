@@ -12,30 +12,38 @@ const {
 // Get all workshops
 router.get("/", getAllWorkshops);
 
-// Ensure the multer middleware is used correctly before the controller for file upload
-router.post("/save", (req, res, next) => {
-    upload(req, res, function (err) {
-        if (err) {
-            console.error("Multer Error:", err.message);
-            return res.status(400).json({ message: err.message });
-        }
-        next(); // Proceed to the next middleware if upload succeeds
-    });
-}, createWorkshop); // createWorkshop is the next middleware after upload
+// Create a new workshop
+router.post(
+    "/save",
+    (req, res, next) => {
+        upload(req, res, function (err) {
+            if (err) {
+                console.error("Multer Error:", err.message);
+                return res.status(400).json({ message: err.message });
+            }
+            next(); // Proceed to the next middleware if upload succeeds
+        });
+    },
+    createWorkshop
+);
 
-// Get workshop by ID
+// Get a workshop by ID
 router.get("/:id", getWorkshopById);
 
-// Update workshop by ID (PUT for full update)
-router.put("/update/:id", (req, res, next) => {
-    upload(req, res, function (err) {
-        if (err) {
-            console.error("Multer Error:", err.message);
-            return res.status(400).json({ message: err.message });
-        }
-        next(); // Proceed to the next middleware if upload succeeds
-    });
-}, updateWorkshop); // updateWorkshop is the next middleware after upload
+// Update workshop by ID
+router.put(
+    "/update/:id",
+    (req, res, next) => {
+        upload(req, res, function (err) {
+            if (err) {
+                console.error("Multer Error:", err.message);
+                return res.status(400).json({ message: err.message });
+            }
+            next(); // Proceed to the next middleware if upload succeeds
+        });
+    },
+    updateWorkshop
+);
 
 // Delete workshop by ID
 router.delete("/delete/:id", deleteWorkshop);

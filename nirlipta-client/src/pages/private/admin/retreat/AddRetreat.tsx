@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const AddRetreat: React.FC = () => {
     const navigate = useNavigate();
 
@@ -18,10 +17,10 @@ const AddRetreat: React.FC = () => {
         meals_info: "",
         organizer: "",
         featuring_events: "",
-        accommodation_id: null, // Accommodation ID
-        instructor_id: null, // Instructor ID
-        guests: [] as { name: string; photo: File | null }[], // Guest info and their photo
-        retreatPhotos: [] as File[], // Multiple retreat photos
+        accommodation_id: null,
+        instructor_id: null,
+        guests: [] as { name: string; photo: File | null }[],
+        retreatPhotos: [] as File[],
     });
 
     const [loading, setLoading] = useState(false);
@@ -81,7 +80,6 @@ const AddRetreat: React.FC = () => {
         setFormData({ ...formData, guests: newGuests });
     };
 
-
     const addGuest = () => {
         setFormData({ ...formData, guests: [...formData.guests, { name: "", photo: null }] });
     };
@@ -89,6 +87,26 @@ const AddRetreat: React.FC = () => {
     const removeGuest = (index: number) => {
         const newGuests = formData.guests.filter((_, i) => i !== index);
         setFormData({ ...formData, guests: newGuests });
+    };
+
+    const resetForm = () => {
+        setFormData({
+            title: "",
+            description: "",
+            start_date: "",
+            end_date: "",
+            price_per_person: 0,
+            max_participants: 0,
+            address: "",
+            map_location: "",
+            meals_info: "",
+            organizer: "",
+            featuring_events: "",
+            accommodation_id: null,
+            instructor_id: null,
+            guests: [],
+            retreatPhotos: [],
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -104,6 +122,8 @@ const AddRetreat: React.FC = () => {
             formPayload.append("end_date", formData.end_date);
             formPayload.append("price_per_person", formData.price_per_person.toString());
             formPayload.append("max_participants", formData.max_participants.toString());
+
+            // Adding the address and map_location
             formPayload.append("address", formData.address);
             formPayload.append("map_location", formData.map_location);
 
@@ -123,7 +143,7 @@ const AddRetreat: React.FC = () => {
 
             // Add retreat photos
             formData.retreatPhotos.forEach((photo) => {
-                formPayload.append("photos", photo);
+                formPayload.append("retreat_photos", photo);  // Ensure the key matches the backend configuration
             });
 
             // Add guest details (names and optional photos)
@@ -134,6 +154,7 @@ const AddRetreat: React.FC = () => {
                 }
             });
 
+            console.log("Payload:::", formData);
             // Send the request to the API
             const response = await axios.post(
                 "http://localhost:5000/api/retreats/save",
@@ -147,6 +168,7 @@ const AddRetreat: React.FC = () => {
 
             console.log("Retreat added successfully:", response.data);
             alert("Retreat added successfully!");
+            resetForm();
             navigate("/admin/retreats");
         } catch (error) {
             console.error("Error adding retreat:", error);
@@ -161,7 +183,6 @@ const AddRetreat: React.FC = () => {
     const handleGoBack = () => {
         navigate("/admin/retreats");
     };
-
 
     return (
         <div className="max-w-3xl mx-auto p-6">
@@ -338,6 +359,7 @@ const AddRetreat: React.FC = () => {
                     />
                 </div>
 
+
                 {/* Guest Details */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Guest List</label>
@@ -399,4 +421,3 @@ const AddRetreat: React.FC = () => {
 };
 
 export default AddRetreat;
-

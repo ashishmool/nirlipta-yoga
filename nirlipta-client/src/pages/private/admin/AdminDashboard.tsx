@@ -3,9 +3,9 @@ import { Link, Outlet } from "react-router-dom";
 
 const sidelinks = [
     { title: "Instructors", href: "/admin/instructors" },
+    { title: "Workshops", href: "/admin/workshops" },
     { title: "Accommodations", href: "/admin/accommodations" },
     { title: "Retreats", href: "/admin/retreats" },
-    { title: "Workshops", href: "/admin/workshops" },
     { title: "Partners", href: "/admin/partners" },
     { title: "Users", href: "/admin/users" },
 ];

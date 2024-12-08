@@ -13,7 +13,7 @@ const workshopSchema = new mongoose.Schema(
         },
         description: {
             type: String,
-            required: true,
+            required: false,
         },
         difficulty_level: {
             type: String,
@@ -39,13 +39,31 @@ const workshopSchema = new mongoose.Schema(
         instructor_id: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
             ref: "Instructor",
-            required: true,
+            required: false,
         },
         category: {
             type: mongoose.Schema.Types.ObjectId, // Foreign Key
             ref: "WorkshopCategory", // Reference to WorkshopCategory model
             required: true,
         },
+        modules: [
+            {
+                name: {
+                    type: String,
+                    required: true,
+                    trim: true,
+                },
+                duration: {
+                    type: Number,
+                    required: true,
+                    min: 1, // Minimum 1
+                    validate: {
+                        validator: Number.isInteger,
+                        message: "Module duration must be an integer.",
+                    },
+                },
+            },
+        ],
     },
     { timestamps: true }
 );

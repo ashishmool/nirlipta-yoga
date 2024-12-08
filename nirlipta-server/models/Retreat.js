@@ -31,9 +31,11 @@ const retreatSchema = new mongoose.Schema(
         },
         address: {
             type: String,
+            required: false,
         },
         map_location: {
             type: String, // URL or coordinates
+            required: false,
         },
         meals_info: {
             type: [String], // Array of meal options (e.g., "Vegetarian", "Vegan", etc.)
@@ -44,8 +46,8 @@ const retreatSchema = new mongoose.Schema(
         },
         guests: [
             {
-                name: { type: String, required: true }, // Guest name
-                photo: { type: String }, // Photo URL (nullable)
+                name: { type: String, required: false }, // Guest name
+                photo: { type: String, required: false }, // Photo URL (nullable)
             },
         ],
         featuring_events: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
 interface AccommodationFormData {
     name: string;
@@ -10,7 +10,7 @@ interface AccommodationFormData {
     location: string;
     max_occupancy: number;
     available_rooms: number;
-    amenities: string;
+    amenities: string; // Keep amenities as a string for easy handling in the form
     photo: File | null;
 }
 
@@ -24,7 +24,7 @@ const UpdateAccommodation: React.FC = () => {
         location: "",
         max_occupancy: 1,
         available_rooms: 0,
-        amenities: "",
+        amenities: "", // This should be a string for easy form handling
         photo: null,
     });
     const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ const UpdateAccommodation: React.FC = () => {
                     location: accommodation.location || "",
                     max_occupancy: accommodation.max_occupancy || 1,
                     available_rooms: accommodation.available_rooms || 0,
-                    amenities: accommodation.amenities?.join(", ") || "", // Ensure it's an empty string if undefined
+                    amenities: accommodation.amenities?.join(", ") || "", // Ensure it's a string
                     photo: null, // Don't auto-load photo into form data
                 });
 
@@ -80,6 +80,7 @@ const UpdateAccommodation: React.FC = () => {
         e.preventDefault();
         setLoading(true);
 
+        // Ensure amenities are stored as an array
         const amenitiesArray = formData.amenities.trim()
             ? formData.amenities.split(',').map((item) => item.trim())
             : [];
@@ -91,14 +92,13 @@ const UpdateAccommodation: React.FC = () => {
         formDataObj.append("max_occupancy", formData.max_occupancy.toString());
         formDataObj.append("available_rooms", formData.available_rooms.toString());
         formDataObj.append("location", formData.location);
-        formDataObj.append("amenities", JSON.stringify(amenitiesArray));
+        formDataObj.append("amenities", JSON.stringify(amenitiesArray)); // Send amenities as a JSON array
 
         if (formData.photo) {
             formDataObj.append("photo", formData.photo);
         }
 
         try {
-            console.log(formData);
             await axios.put(
                 `http://localhost:5000/api/accommodations/update/${id}`,
                 formDataObj,
@@ -107,7 +107,6 @@ const UpdateAccommodation: React.FC = () => {
                 }
             );
             toast.success("Success!");
-            alert("Accommodation updated successfully!");
             navigate("/admin/accommodations");
         } catch (error) {
             console.error("Error updating accommodation:", error);
@@ -129,6 +128,7 @@ const UpdateAccommodation: React.FC = () => {
                 <h1 className="text-3xl font-semibold">Update Accommodation</h1>
             </div>
             <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name and Location Fields */}
                 <div className="grid grid-cols-7 gap-4">
                     <div className="col-span-4">
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -240,6 +240,7 @@ const UpdateAccommodation: React.FC = () => {
                     </div>
                 </div>
 
+                {/* Submit button */}
                 <div className="flex justify-end">
                     <button
                         type="submit"
@@ -248,27 +249,6 @@ const UpdateAccommodation: React.FC = () => {
                     >
                         {loading ? "Updating..." : "Update Accommodation"}
                     </button>
-                </div>
-
-                <div>
-                    <label htmlFor="photo" className="block text-sm font-medium text-gray-700">Photo</label>
-                    <input
-                        id="photo"
-                        name="photo"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="mt-1 block w-full text-sm text-gray-500"
-                    />
-
-                    {/* Only show image preview if a new file is selected */}
-                    {imagePreview && (
-                        <img
-                            src={imagePreview}
-                            alt="Accommodation Preview"
-                            className="mt-2 w-32 h-32 object-cover rounded-md"
-                        />
-                    )}
                 </div>
             </form>
         </div>
