@@ -3,6 +3,7 @@ require("dotenv").config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
+// Middleware to authenticate JWT token
 function authenticateToken(req, res, next) {
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
@@ -11,13 +12,14 @@ function authenticateToken(req, res, next) {
 
     try {
         const verified = jwt.verify(token, SECRET_KEY);
-        req.user = verified;
+        req.user = verified; // Attach the user data to the request object
         next();
     } catch (e) {
         res.status(400).send("Invalid token");
     }
 }
 
+// Middleware to authorize based on role
 function authorizeRole(role) {
     return (req, res, next) => {
         if (req.user.role !== role) {
@@ -29,4 +31,3 @@ function authorizeRole(role) {
 }
 
 module.exports = { authenticateToken, authorizeRole };
-

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const physicalCourseSchema = new mongoose.Schema(
+const workshopSchema = new mongoose.Schema(
     {
         course_id: {
             type: mongoose.Schema.Types.ObjectId, // Primary Key
@@ -41,9 +41,14 @@ const physicalCourseSchema = new mongoose.Schema(
             ref: "Instructor",
             required: true,
         },
+        category: {
+            type: mongoose.Schema.Types.ObjectId, // Foreign Key
+            ref: "WorkshopCategory", // Reference to WorkshopCategory model
+            required: true,
+        },
     },
     { timestamps: true }
 );
 
-const Workshop = mongoose.model("Workshop", physicalCourseSchema);
+const Workshop = mongoose.model("Workshop", workshopSchema);
 module.exports = Workshop;

@@ -8,7 +8,8 @@ const router = express.Router();
 router.get("/", userValidation, getUsers);
 
 // Create a new user
-router.post("/save", userValidation, createUser);
+router.post("/save", createUser);
+// router.post("/save", userValidation, createUser);
 
 // Get user by ID
 router.get("/getById/:id", getUserById);

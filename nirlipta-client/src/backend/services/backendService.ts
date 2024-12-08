@@ -1,10 +1,9 @@
 import axios from "axios";
 
-export const signup = async ({ email, password, username, role }) => {
+export const signup = async ({ email, role }) => {
     try {
         const response = await axios.post("http://localhost:5000/api/auth/register", {
             email,
-            password,
             role,
         });
         return response.data;

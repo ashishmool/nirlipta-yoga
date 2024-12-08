@@ -42,6 +42,7 @@ app.use("/api/lessons", lessonRoutes);
 app.use("/api/onlineCourses", onlineCourseRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/workshops", workshopRoutes);
+app.use("/api/workshop-categories", workshopRoutes);
 app.use("/api/retreats", retreatRoutes);
 app.use("/api/schedules", scheduleRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);

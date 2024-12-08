@@ -27,9 +27,6 @@ export { default as Privacy } from './policies/Privacy';
 export { default as Cookies } from './policies/Cookies';
 export { default as Terms } from './policies/Terms';
 
-// About
-export { default as About } from '@/pages/about/About';
-
 // Contact
 // export { default as Contact } from './contact/ContactForm';
 
@@ -46,7 +43,7 @@ export { default as About } from '@/pages/about/About';
 // export { default as EditDetails } from './edit/Edit.tsx';
 
 // Explore
-export { default as Explore } from '@/pages/explore/Explore.tsx';
+export { default as Explore } from '@/pages/public/explore/Explore.tsx';
 
 // Reset 
 // export { default as Reset } from './reset/Reset.tsx';

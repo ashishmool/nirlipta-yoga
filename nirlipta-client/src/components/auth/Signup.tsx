@@ -12,6 +12,7 @@ import { Label } from "../ui/label";
 import { toast } from "sonner";
 import Loading from "../ui/loading";
 
+
 type FormDataTypes = {
     email: string;
     medical_conditions: string;
