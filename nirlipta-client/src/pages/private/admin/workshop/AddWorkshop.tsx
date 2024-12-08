@@ -13,6 +13,8 @@ interface WorkshopFormData {
     map_location: string;
     photo: File | null;
     instructor_id: string;
+    category: string;
+    newCategory?: string; // New category field
 }
 
 const AddWorkshop: React.FC = () => {
@@ -27,11 +29,13 @@ const AddWorkshop: React.FC = () => {
         map_location: "",
         photo: null,
         instructor_id: "",
+        category: "",
     });
-
     const [loading, setLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [instructors, setInstructors] = useState<any[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [isNewCategory, setIsNewCategory] = useState(false); // New state for toggling category creation
 
     // Fetch instructors
     useEffect(() => {
@@ -51,6 +55,27 @@ const AddWorkshop: React.FC = () => {
         fetchInstructors();
     }, []);
 
+    // Fetch workshop categories
+    useEffect(() => {
+        const fetchCategories = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get("http://localhost:5000/api/workshop-categories");
+                console.log(response.data);  // Check the response here
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+                toast.error("Failed to fetch categories.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+
+        fetchCategories();
+    }, []);
+
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
@@ -62,6 +87,12 @@ const AddWorkshop: React.FC = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+    };
+
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedCategory = e.target.value;
+        setFormData({ ...formData, category: selectedCategory });
+        setIsNewCategory(selectedCategory === "create-new"); // Show input field if "Create New Category" is selected
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -77,8 +108,12 @@ const AddWorkshop: React.FC = () => {
         formDataObj.append("address", formData.address);
         formDataObj.append("map_location", formData.map_location);
         formDataObj.append("instructor_id", formData.instructor_id);
+        formDataObj.append("category", formData.category); // Add selected category
         if (formData.photo) {
             formDataObj.append("photo", formData.photo);
+        }
+        if (isNewCategory && formData.newCategory) {
+            formDataObj.append("newCategory", formData.newCategory); // Add new category if applicable
         }
 
         try {
@@ -242,6 +277,41 @@ const AddWorkshop: React.FC = () => {
                             </option>
                         ))}
                     </select>
+                </div>
+
+                {/* Category */}
+                <div>
+                    <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+                    <select
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleCategoryChange}
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+                        required
+                    >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                            <option key={category._id} value={category._id}>
+                                {category.name}
+                            </option>
+                        ))}
+                        <option value="create-new">Create New Category</option> {/* Always last */}
+                    </select>
+
+                    {isNewCategory && (
+                        <div className="mt-4">
+                            <label htmlFor="newCategory" className="block text-sm font-medium text-gray-700">New Category Name</label>
+                            <input
+                                id="newCategory"
+                                name="newCategory"
+                                type="text"
+                                value={formData.newCategory || ""}
+                                onChange={handleChange}
+                                className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Submit Button */}
