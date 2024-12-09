@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { FaMale, FaFemale, FaTransgenderAlt } from 'react-icons/fa';
 import axios from "axios";
 
 const ListUsers: React.FC = () => {
@@ -69,7 +70,7 @@ const ListUsers: React.FC = () => {
                 <table className="min-w-full bg-white border border-gray-300">
                     <thead>
                     <tr className="bg-gray-100">
-                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Name</th>
+                        <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Gender</th>
                         <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Email</th>
                         <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Role</th>
                         <th className="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
@@ -78,7 +79,16 @@ const ListUsers: React.FC = () => {
                     <tbody>
                     {users.map((user) => (
                         <tr key={user._id} className="border-b border-gray-200 hover:bg-gray-50">
-                            <td className="px-6 py-4 text-sm font-medium text-gray-900">{user.name}</td>
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                                {user.gender === "male" && <FaMale className="inline-block mr-2" />}
+                                {user.gender === "female" && <FaFemale className="inline-block mr-2" />}
+                                {user.gender === "other" && (
+                                    <>
+                                        <FaMale className="inline-block mr-2" />
+                                        <FaFemale className="inline-block mr-2" />
+                                    </>
+                                )}
+                            </td>
                             <td className="px-6 py-4 text-sm text-gray-500">{user.email}</td>
                             <td className="px-6 py-4 text-sm text-gray-500">{user.role}</td>
                             <td className="px-6 py-4 text-sm text-gray-500">

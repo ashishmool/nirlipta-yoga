@@ -155,6 +155,14 @@ const AddRetreat: React.FC = () => {
             });
 
             console.log("Payload:::", formData);
+
+            formPayload.forEach((value, key) => {
+                console.log(key, value);
+            });
+
+            console.log("Guest Data:", formData.guests);
+
+
             // Send the request to the API
             const response = await axios.post(
                 "http://localhost:5000/api/retreats/save",

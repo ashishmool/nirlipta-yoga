@@ -14,6 +14,7 @@ const {
 router.get("/", getAccommodations);
 
 // Ensure the multer middleware is used correctly before the controller
+// Ensure the multer middleware is used correctly before the controller
 router.post("/save", (req, res, next) => {
     // Use multer middleware to handle file upload
     upload(req, res, function (err) {
@@ -25,9 +26,6 @@ router.post("/save", (req, res, next) => {
         next(); // Proceed to the next middleware if upload succeeds
     });
 }, createAccommodation); // createAccommodation is the next middleware after upload
-
-// Get accommodation by ID
-router.get("/getById/:id", getAccommodationById);
 
 // Update accommodation by ID (PUT for full update)
 router.put("/update/:id", (req, res, next) => {
@@ -41,6 +39,11 @@ router.put("/update/:id", (req, res, next) => {
         next(); // Proceed to the next middleware if upload succeeds
     });
 }, updateAccommodation); // updateAccommodation is the next middleware after upload
+
+
+// Get accommodation by ID
+router.get("/getById/:id", getAccommodationById);
+
 
 
 // Partially update accommodation by ID (PATCH)

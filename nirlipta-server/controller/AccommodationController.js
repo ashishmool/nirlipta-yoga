@@ -27,9 +27,9 @@ const getAccommodationById = async (req, res) => {
 
 // Create a new accommodation
 const createAccommodation = async (req, res) => {
-    // Check if the file is uploaded
-    if (!req.file) {
-        return res.status(400).json({ message: "Photo is required" });
+    // Check if the accommodation photo is uploaded
+    if (!req.files || !req.files.accommodation_photo || req.files.accommodation_photo.length === 0) {
+        return res.status(400).json({ message: "Accommodation photo is required" });
     }
 
     try {
@@ -40,6 +40,9 @@ const createAccommodation = async (req, res) => {
             return res.status(400).json({ message: "Price and available rooms are required" });
         }
 
+        // Assuming only one file is uploaded for accommodation photo
+        const accommodationPhotoPath = `/uploads/accommodation_photos/${req.files.accommodation_photo[0].filename}`;
+
         // Create a new accommodation document
         const newAccommodation = new Accommodation({
             name,
@@ -49,7 +52,7 @@ const createAccommodation = async (req, res) => {
             available_rooms,
             max_occupancy,
             amenities,
-            photo: `/uploads/${req.file.filename}`, // Store the relative path to the image
+            photo: accommodationPhotoPath, // Store the relative path to the image
         });
 
         // Save to the database
@@ -65,14 +68,15 @@ const createAccommodation = async (req, res) => {
 
 
 
+
 // Update accommodation by ID (PUT)
 const updateAccommodation = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // If a new photo is uploaded, update the photo field with the new file path
-        if (req.file) {
-            req.body.photo = `/uploads/${req.file.filename}`;  // Assuming you're using Multer and storing relative paths
+        // If a new accommodation photo is uploaded, update the photo field with the new file path
+        if (req.files && req.files.accommodation_photo && req.files.accommodation_photo.length > 0) {
+            req.body.photo = `/uploads/accommodation_photos/${req.files.accommodation_photo[0].filename}`;  // Path to the uploaded photo
         }
 
         // Update accommodation document
@@ -87,6 +91,7 @@ const updateAccommodation = async (req, res) => {
         res.status(500).json({ message: "Error updating accommodation", error });
     }
 };
+
 
 
 // Partially update accommodation by ID (PATCH)

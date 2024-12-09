@@ -94,6 +94,7 @@ const UpdateAccommodation: React.FC = () => {
         formDataObj.append("location", formData.location);
         formDataObj.append("amenities", JSON.stringify(amenitiesArray)); // Send amenities as a JSON array
 
+        // Append photo if it's provided (or omit if not)
         if (formData.photo) {
             formDataObj.append("photo", formData.photo);
         }
@@ -106,7 +107,7 @@ const UpdateAccommodation: React.FC = () => {
                     headers: { "Content-Type": "multipart/form-data" },
                 }
             );
-            toast.success("Success!");
+            toast.success("Accommodation updated successfully!");
             navigate("/admin/accommodations");
         } catch (error) {
             console.error("Error updating accommodation:", error);

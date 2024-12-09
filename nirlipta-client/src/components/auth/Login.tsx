@@ -49,10 +49,25 @@ export default function Login({ onClose, onLoginSuccess }: LoginRegisterModalPro
                 localStorage.setItem("email", userEmail);
                 localStorage.setItem("role", role);
 
-                console.log(response.data);
-
                 toast.success("Login successful!");
+
+                // Invoke callback for additional success handling
                 if (onLoginSuccess) onLoginSuccess();
+
+                // Role-based redirection
+                switch (role) {
+                    case "admin":
+                        window.location.href = "/admin"; // Redirect to admin page
+                        break;
+                    case "instructor":
+                        window.location.href = "/instructor"; // Redirect to instructor page
+                        break;
+                    case "student":
+                    default:
+                        // No redirect for students, let them remain on the current page
+                        break;
+                }
+
                 onClose();
             } else {
                 throw new Error("Token not found in response");

@@ -232,74 +232,32 @@ const UpdateWorkshop: React.FC = () => {
                             ))}
                             <option value="create-new">Create New Category</option>
                         </select>
+                        {isNewCategory && (
+                            <input
+                                id="newCategory"
+                                name="newCategory"
+                                type="text"
+                                value={formData.newCategory || ""}
+                                onChange={handleChange}
+                                className="mt-2 block w-full p-3 border border-gray-300 rounded-md"
+                                placeholder="Enter new category name"
+                            />
+                        )}
                     </div>
                 </div>
 
-                {/* Difficulty Level, Price, and Address in the same line */}
-                <div className="flex space-x-6">
-                    <div className="flex-1">
-                        <label htmlFor="difficulty_level" className="block text-sm font-medium text-gray-700">Difficulty Level</label>
-                        <select
-                            id="difficulty_level"
-                            name="difficulty_level"
-                            value={formData.difficulty_level}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                            required
-                        >
-                            <option value="beginner">Beginner</option>
-                            <option value="intermediate">Intermediate</option>
-                            <option value="advanced">Advanced</option>
-                        </select>
-                    </div>
-                    <div className="flex-1">
-                        <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
-                        <input
-                            id="price"
-                            name="price"
-                            type="number"
-                            value={formData.price}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                            required
-                        />
-                    </div>
-                    <div className="flex-1">
-                        <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-                        <input
-                            id="address"
-                            name="address"
-                            type="text"
-                            value={formData.address}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                </div>
-
-                {/* Classroom Info and Map Location in the same line */}
-                <div className="flex space-x-6">
-                    <div className="flex-1">
-                        <label htmlFor="classroom_info" className="block text-sm font-medium text-gray-700">Classroom Info</label>
-                        <textarea
-                            id="classroom_info"
-                            name="classroom_info"
-                            value={formData.classroom_info}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                    <div className="flex-1">
-                        <label htmlFor="map_location" className="block text-sm font-medium text-gray-700">Map Location</label>
-                        <input
-                            id="map_location"
-                            name="map_location"
-                            type="text"
-                            value={formData.map_location}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
+                {/* Description */}
+                <div>
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        rows={4}
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+                        required
+                    />
                 </div>
 
                 {/* Instructor */}
@@ -313,7 +271,7 @@ const UpdateWorkshop: React.FC = () => {
                         className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
                         required
                     >
-                        <option value="">Select an instructor</option>
+                        <option value="">Select Instructor</option>
                         {instructors.map((instructor) => (
                             <option key={instructor._id} value={instructor._id}>
                                 {instructor.name}
@@ -322,60 +280,18 @@ const UpdateWorkshop: React.FC = () => {
                     </select>
                 </div>
 
-                {/* Description */}
+                {/* Price */}
                 <div>
-                    <div className="flex-1">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea
-                            id="description"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-                        />
-                    </div>
-                </div>
-
-
-                {/* Modules */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">Modules</h2>
-                    {formData.modules.map((module, index) => (
-                        <div key={index} className="flex items-center space-x-4 mb-4">
-                            <input
-                                type="text"
-                                placeholder="Module Name"
-                                value={module.name}
-                                onChange={(e) =>
-                                    handleModuleChange(index, "name", e.target.value)
-                                }
-                                className="flex-1 p-2 border rounded"
-                            />
-                            <input
-                                type="number"
-                                placeholder="Duration (minutes)"
-                                value={module.duration}
-                                onChange={(e) =>
-                                    handleModuleChange(index, "duration", parseInt(e.target.value, 10))
-                                }
-                                className="w-32 p-2 border rounded"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeModule(index)}
-                                className="text-red-600"
-                            >
-                                Remove
-                            </button>
-                        </div>
-                    ))}
-                    <button
-                        type="button"
-                        onClick={addModule}
-                        className="py-2 px-4 bg-indigo-600 text-white rounded"
-                    >
-                        Add Module
-                    </button>
+                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+                    <input
+                        id="price"
+                        name="price"
+                        type="number"
+                        value={formData.price}
+                        onChange={handleChange}
+                        className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+                        required
+                    />
                 </div>
 
                 {/* Photo */}
@@ -385,28 +301,61 @@ const UpdateWorkshop: React.FC = () => {
                         id="photo"
                         name="photo"
                         type="file"
-                        accept="image/*"
                         onChange={handleFileChange}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full text-sm text-gray-700"
                     />
                     {imagePreview && (
-                        <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="mt-4 w-full h-60 object-cover rounded-md"
-                        />
+                        <div className="mt-2">
+                            <img src={imagePreview} alt="Photo preview" className="w-32 h-32 object-cover rounded-md" />
+                        </div>
                     )}
+                </div>
+
+                {/* Modules */}
+                <div>
+                    <h2 className="text-lg font-semibold text-gray-700">Modules</h2>
+                    {formData.modules.map((module, index) => (
+                        <div key={index} className="flex space-x-4 mb-4">
+                            <input
+                                type="text"
+                                value={module.name}
+                                onChange={(e) => handleModuleChange(index, "name", e.target.value)}
+                                placeholder="Module Name"
+                                className="block w-full p-3 border border-gray-300 rounded-md"
+                            />
+                            <input
+                                type="number"
+                                value={module.duration}
+                                onChange={(e) => handleModuleChange(index, "duration", +e.target.value)}
+                                placeholder="Duration (min)"
+                                className="block w-full p-3 border border-gray-300 rounded-md"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => removeModule(index)}
+                                className="text-red-500 hover:text-red-600"
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        onClick={addModule}
+                        className="text-indigo-600 hover:text-indigo-700"
+                    >
+                        Add Module
+                    </button>
                 </div>
 
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-indigo-600 text-white rounded"
+                    className="w-full p-3 bg-indigo-600 text-white rounded-md disabled:bg-indigo-300"
                 >
                     {loading ? "Updating..." : "Update Workshop"}
                 </button>
             </form>
-
         </div>
     );
 };

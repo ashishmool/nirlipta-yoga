@@ -18,9 +18,6 @@ import ListInstructors from "@/pages/private/admin/instructor/ListInstructors.ts
 import UpdateInstructor from "@/pages/private/admin/instructor/UpdateInstructor.tsx";
 import ListAccommodation from "@/pages/private/admin/accommodation/ListAccommodation.tsx";
 import UpdateAccommodation from "@/pages/private/admin/accommodation/UpdateAccommodation.tsx";
-import ListPartners from "@/pages/private/admin/partner/ListPartners.tsx";
-import AddPartner from "@/pages/private/admin/partner/AddPartner.tsx";
-import UpdatePartner from "@/pages/private/admin/partner/UpdatePartner.tsx";
 import ListUsers from "@/pages/private/admin/user/ListUsers.tsx";
 import AddUser from "@/pages/private/admin/user/AddUser.tsx";
 import UpdateUser from "@/pages/private/admin/user/UpdateUser.tsx";
@@ -75,11 +72,6 @@ export default function Routing() {
                     <Route path="instructors" element={<ListInstructors />} />
                     <Route path="instructors/add" element={<AddInstructor />} />
                     <Route path="instructors/update/:id" element={<UpdateInstructor />} />
-
-                    {/* Partner Routes */}
-                    <Route path="partners" element={<ListPartners />} />
-                    <Route path="partners/add" element={<AddPartner />} />
-                    <Route path="partners/update/:id" element={<UpdatePartner />} />
 
                     {/* Workshop Routes */}
                     <Route path="workshops" element={<ListWorkshops />} />

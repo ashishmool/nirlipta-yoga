@@ -32,8 +32,8 @@ const getWorkshopById = async (req, res) => {
 
 // Create a new workshop
 const createWorkshop = async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: "Photo is required" });
+    if (!req.files || !req.files.workshop_photo) {
+        return res.status(400).json({ message: "Workshop photo is required" });
     }
 
     try {
@@ -48,28 +48,15 @@ const createWorkshop = async (req, res) => {
             instructor_id,
             category,
             newCategory,
-            modules, // Expecting an array of module objects
+            modules,
         } = req.body;
 
-        // Parse `modules` if sent as JSON
+        // Parse and validate modules as before
         let parsedModules = [];
         if (typeof modules === "string") {
             parsedModules = JSON.parse(modules);
         } else if (Array.isArray(modules)) {
             parsedModules = modules;
-        }
-
-        // Validate modules
-        if (!parsedModules || parsedModules.length === 0) {
-            return res.status(400).json({ message: "Modules are required." });
-        }
-
-        for (const module of parsedModules) {
-            if (!module.name || !module.duration) {
-                return res
-                    .status(400)
-                    .json({ message: "Each module must have a name and duration." });
-            }
         }
 
         // Handle category creation if needed
@@ -96,7 +83,7 @@ const createWorkshop = async (req, res) => {
             instructor_id,
             category: selectedCategory,
             modules: parsedModules,
-            photo: `/uploads/${req.file.filename}`,
+            photo: `/uploads/workshop_photos/${req.files.workshop_photo[0].filename}`, // Correctly reference the uploaded workshop photo
         });
 
         const savedWorkshop = await newWorkshop.save();
@@ -107,36 +94,19 @@ const createWorkshop = async (req, res) => {
     }
 };
 
-// Update workshop by ID (PUT)
+
+// Update workshop by ID
 const updateWorkshop = async (req, res) => {
     try {
         const { id } = req.params;
         let { category, newCategory, modules } = req.body;
 
-        // Parse `modules` if sent as JSON
+        // Parse and validate modules as before
         let parsedModules = [];
-        if (modules) {
-            if (typeof modules === "string") {
-                parsedModules = JSON.parse(modules);
-            } else if (Array.isArray(modules)) {
-                parsedModules = modules;
-            }
-
-            // Validate modules
-            for (const module of parsedModules) {
-                if (!module.name || !module.duration) {
-                    return res
-                        .status(400)
-                        .json({ message: "Each module must have a name and duration." });
-                }
-            }
-
-            req.body.modules = parsedModules;
-        }
-
-        // Handle photo upload
-        if (req.file) {
-            req.body.photo = `/uploads/${req.file.filename}`;
+        if (typeof modules === "string") {
+            parsedModules = JSON.parse(modules);
+        } else if (Array.isArray(modules)) {
+            parsedModules = modules;
         }
 
         // Handle category creation if needed
@@ -147,10 +117,22 @@ const updateWorkshop = async (req, res) => {
             }
             const newCategoryDoc = new Category({ name: newCategory });
             await newCategoryDoc.save();
-            req.body.category = newCategoryDoc._id;
+            category = newCategoryDoc._id;
         }
 
-        const updatedWorkshop = await Workshop.findByIdAndUpdate(id, req.body, {
+        // Handle photo upload if new photo is provided
+        if (req.files && req.files.workshop_photo) {
+            req.body.photo = `/uploads/workshop_photos/${req.files.workshop_photo[0].filename}`;
+        }
+
+        // Update workshop data
+        const updatedWorkshopData = {
+            ...req.body,
+            modules: parsedModules, // Update modules
+            category, // Update category
+        };
+
+        const updatedWorkshop = await Workshop.findByIdAndUpdate(id, updatedWorkshopData, {
             new: true,
             runValidators: true,
         });

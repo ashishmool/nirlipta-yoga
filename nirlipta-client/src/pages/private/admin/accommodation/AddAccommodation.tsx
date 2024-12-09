@@ -62,27 +62,26 @@ const AddAccommodation: React.FC = () => {
         formDataObj.append("location", formData.location); // Ensure location is added
         formDataObj.append("amenities", JSON.stringify(amenitiesArray));  // Send amenities as a JSON array
 
-        // Add the photo file if it's present
+        // Change this line to match the backend field name for accommodation photo
         if (formData.photo) {
-            formDataObj.append("photo", formData.photo);
+            formDataObj.append("accommodation_photo", formData.photo);
         }
 
         try {
             console.log("Payload for Accommodation:::", formDataObj);
-            console.log("Payload for Accommodation:::", formData);
             await axios.post("http://localhost:5000/api/accommodations/save", formDataObj, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             toast.success("Success!");
-            alert("Accommodation added successfully!");
             navigate("/admin/accommodations");
         } catch (error) {
             console.error("Error adding accommodation:", error);
-            alert("Failed to add accommodation.");
+            toast.error("Failed to add accommodation.");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="max-w-3xl mx-auto p-6">

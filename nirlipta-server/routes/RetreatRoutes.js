@@ -4,11 +4,35 @@ const upload = require("../config/multerConfig"); // Import multer setup
 
 const { getAllRetreats, getRetreatById, createRetreat, updateRetreat, deleteRetreat } = require("../controller/RetreatController");
 
-// Create a new retreat (with image upload for retreat_photos and guest photos)
-router.post("/save", upload.retreatPhotos, createRetreat);
+router.post("/save", upload, (req, res) => {
+    try {
+        // Access files from req.files
+        console.log("Uploaded files:", req.files);
 
-// Update retreat by ID (with image upload for retreat_photos and guest photos)
-router.put("/update/:id", upload.retreatPhotos, updateRetreat);
+        // Access other form data from req.body
+        console.log("Form data:", req.body);
+
+        // Call your controller with the data
+        createRetreat(req, res);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+router.post("/update/:id", upload, (req, res) => {
+    try {
+        // Access files from req.files
+        console.log("Uploaded files:", req.files);
+
+        // Access other form data from req.body
+        console.log("Form data:", req.body);
+
+        // Call your controller with the data
+        updateRetreat(req, res);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
 
 // Get all retreats
 router.get("/", getAllRetreats);
