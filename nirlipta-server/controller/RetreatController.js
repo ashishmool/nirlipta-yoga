@@ -1,13 +1,12 @@
 const Retreat = require("../models/Retreat"); // Assuming Retreat model is in models folder
 
-// Create a new retreat (with image upload)
 const createRetreat = (req, res) => {
     const retreatData = req.body;
 
     // Handle uploaded photos (if any)
     let filePaths = [];
-    if (req.files && req.files.length > 0) {
-        filePaths = req.files.map(file => file.filename); // Store the filenames in the array
+    if (req.files && req.files["retreat_photos"]) {
+        filePaths = req.files["retreat_photos"].map(file => file.path); // Store the file paths
     }
 
     // Add file paths to the retreat data
@@ -19,6 +18,7 @@ const createRetreat = (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 };
 
+
 // Update retreat by ID (with image upload)
 const updateRetreat = (req, res) => {
     const retreatId = req.params.id;
@@ -26,9 +26,9 @@ const updateRetreat = (req, res) => {
 
     // Handle uploaded photos (if any)
     let updatedPhotos = [];
-    if (req.files && req.files.length > 0) {
-        updatedPhotos = req.files.map(file => file.filename);
-        updateData.photos = updatedPhotos; // Update the photos field
+    if (req.files && req.files["retreat_photos"]) {
+        updatedPhotos = req.files["retreat_photos"].map(file => file.path); // Update the photos field
+        updateData.photos = updatedPhotos;
     }
 
     // Update retreat document in the database

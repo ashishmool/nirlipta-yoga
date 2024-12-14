@@ -2,74 +2,81 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-const rootDir = path.resolve(__dirname, "../"); // Root directory
+// Define the root and upload directories
+const rootDir = path.resolve(__dirname, "../");
 const uploadDirectory = path.join(rootDir, "uploads");
 
-// Helper to create directory if it doesn't exist
+// Helper function to create directories if they don't exist
 const createDirectoryIfNotExists = (dirPath) => {
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { recursive: true });
     }
 };
 
-// Multer storage configuration for different upload paths
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        let folder = "";
+// Ensure the base upload directory exists
+createDirectoryIfNotExists(uploadDirectory);
 
+// Multer storage configuration
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        let folder = "uploads"; // Default folder
+
+        // Determine folder based on the field name
         switch (file.fieldname) {
-            case "single_photo":
-                folder = "single_photos";
-                break;
-            case "multiple_photos":
-                folder = "multiple_photos";
-                break;
             case "retreat_photos":
                 folder = "retreat_photos";
                 break;
-            case "workshop_photo": // Handle workshop photo
+            case "guests[0][photo]":
+                folder = "guest_photos";
+                break;
+            case "guests[1][photo]":
+                folder = "guest_photos";
+                break;
+            case "workshop_photo":
                 folder = "workshop_photos";
                 break;
-            case "accommodation_photo": // Handle accommodation photo
+            case "accommodation_photo":
                 folder = "accommodation_photos";
                 break;
             default:
-                folder = "uploads"; // Default folder
+                folder = "misc";
         }
 
         const uploadPath = path.join(uploadDirectory, folder);
         createDirectoryIfNotExists(uploadPath);
         cb(null, uploadPath);
     },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+    filename: (req, file, cb) => {
+        // Generate unique filenames using a timestamp and the original file extension
+        cb(null, `${Date.now()}${path.extname(file.originalname)}`);
     },
 });
 
-// File filter to allow only specific file types
+// File filter to validate file types
 const fileFilter = (req, file, cb) => {
     const allowedExtensions = /jpeg|jpg|png/;
     const extname = allowedExtensions.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedExtensions.test(file.mimetype);
 
     if (extname && mimetype) {
-        cb(null, true);
+        cb(null, true); // File is valid
     } else {
-        cb(new Error("Only JPEG, JPG, and PNG files are allowed!"));
+        cb(new Error("Unsupported file type! Only JPEG, JPG, and PNG are allowed."));
     }
 };
 
-// Unified Multer upload configuration
+// Multer upload configuration
 const upload = multer({
     storage,
     fileFilter,
-    // limits: { fileSize: 10 * 1024 * 1024 }, // Uncomment if needed
+    // Uncomment and adjust the following line if file size limits are needed
+    // limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
 }).fields([
-    { name: "retreat_photos", maxCount: 5 }, // Retreat photos
+    { name: "retreat_photos", maxCount: 5 }, // Up to 5 retreat photos
     { name: "guests[0][photo]", maxCount: 1 }, // First guest photo
-    { name: "guests[1][photo]", maxCount: 1 }, // Additional guest photos as needed
-    { name: "workshop_photo", maxCount: 1 }, // New workshop photo field
-    { name: "accommodation_photo", maxCount: 1 }, // New accommodation photo field
+    { name: "guests[1][photo]", maxCount: 1 }, // Second guest photo (if any)
+    { name: "workshop_photo", maxCount: 1 }, // Workshop photo
+    { name: "accommodation_photo", maxCount: 1 }, // Accommodation photo
 ]);
 
 module.exports = upload;

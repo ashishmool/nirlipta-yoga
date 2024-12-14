@@ -43,14 +43,13 @@ const userSchema = new mongoose.Schema(
             type: [String], // Array of medical conditions
             required: false,
         },
-        created_at: {
-            type: Date,
-            default: Date.now,
-        },
-        updated_at: {
-            type: Date,
-            default: Date.now,
-        },
+        status: {
+            type: String,
+            default: "pending" },
+        otp: {
+            type: String },
+        otpExpiry: {
+            type: Date }, // OTP expiry field
         enrolled_courses: [
             {
                 type: mongoose.Schema.Types.ObjectId,
